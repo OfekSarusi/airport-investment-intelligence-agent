@@ -6,14 +6,21 @@
   "type": "commonjs",
   "scripts": {
     "build-screening-tier": "ts-node scripts/build-screening-tier.ts",
-    "score:smoke": "ts-node tools/scoring.smoke.ts"
+    "score:smoke": "ts-node tools/scoring.smoke.ts",
+    "server:dev": "ts-node server/index.ts"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^22.10.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "exceljs": "^4.4.0"
+    "@google/genai": "^2.19.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1"
   }
 }
