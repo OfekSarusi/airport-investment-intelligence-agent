@@ -1,6 +1,7 @@
 import "dotenv/config";
 import path from "node:path";
 import express from "express";
+import rateLimit from "express-rate-limit";
 import { randomUUID } from "node:crypto";
 import { runTurn } from "../agent/geminiAgent";
 import { resetSession } from "../agent/sessionStore";
@@ -19,11 +20,22 @@ const UI_DIST_DIR = path.join(__dirname, "../ui/dist");
 app.use(express.json());
 app.use(express.static(UI_DIST_DIR));
 
+// Only /api/chat is rate-limited -- it's the one endpoint that spends real
+// Gemini quota per call. 20/min per IP is generous for an actual
+// conversation but stops a flood from exhausting the (free-tier) quota.
+const chatRateLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many messages sent -- please wait a moment and try again." },
+});
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, geminiKeyConfigured: Boolean(process.env.GEMINI_API_KEY) });
 });
 
-app.post("/api/chat", async (req, res) => {
+app.post("/api/chat", chatRateLimiter, async (req, res) => {
   const { message, sessionId: incomingSessionId } = req.body ?? {};
 
   if (typeof message !== "string" || message.trim().length === 0) {
