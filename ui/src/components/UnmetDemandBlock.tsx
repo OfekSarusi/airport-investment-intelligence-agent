@@ -17,7 +17,6 @@ export function ConstrainedPill({ constrained }: { constrained: boolean }) {
 }
 
 export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDemandResult; compact?: boolean }) {
-  const facts = compact ? unmet.narrativeFacts.slice(0, 2) : unmet.narrativeFacts;
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
@@ -50,15 +49,6 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
           Delay figure: <ConfidenceBadge confidence={unmet.delayConfidence} />
         </span>
       </div>
-      {facts.length > 0 ? (
-        <ul className="mt-2 space-y-1 border-t border-slate-100 pt-2 text-xs text-slate-600">
-          {facts.map((f, i) => (
-            <li key={i} className="leading-snug">
-              {f}
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </div>
   );
 }

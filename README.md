@@ -2,7 +2,7 @@
 
 ## Overview
 
-Airport Investment Intelligence Agent is a chat-based analytics tool for identifying US airports where terminal expansion or renovation is likely to be most profitable. It combines a deterministic scoring engine (capacity utilization, congestion, growth, unmet demand) with a Gemini-powered chat assistant that explains the results in plain language — the AI never computes or invents a number, it only narrates what the scoring engine already calculated.
+Airport Investment Intelligence Agent is a chat-based analytics tool for identifying US airports where terminal expansion or renovation is likely to be most profitable. It combines a deterministic scoring engine (capacity utilization, congestion, growth, unmet demand) with a Gemini-powered chat assistant that explains the results in plain language.
 
 The system includes:
 
@@ -13,7 +13,7 @@ A chat interface for querying airport investment data — message stream, tool-c
 A REST API that runs the Gemini agent loop: receives chat messages, calls Gemini with function-calling tools, executes those tools against the scoring engine, and returns the model's narrated answer.
 
 **Deterministic Scoring Engine**
-Pure TypeScript functions (no LLM, no I/O) that compute Congestion Index, Investment Opportunity Score, unmet-demand analysis, and long-haul route share from the airport dataset.
+Pure TypeScript functions that compute Congestion Index, Investment Opportunity Score, unmet-demand analysis, and long-haul route share from the airport dataset.
 
 **Airport Dataset**
 38 US airports with passenger volume, runway/capacity data, growth trends, and delay estimates — each field labeled `sourced` or `estimated` depending on data availability. See [DESIGN.md](./DESIGN.md).
