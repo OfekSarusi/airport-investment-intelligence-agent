@@ -1,0 +1,18 @@
+{
+  "name": "airport-investment-intelligence-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Airport Investment Intelligence Agent - data pipeline and (future) scoring engine / Gemini tool backend.",
+  "type": "commonjs",
+  "scripts": {
+    "build-screening-tier": "ts-node scripts/build-screening-tier.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}
