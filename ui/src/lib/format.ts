@@ -11,10 +11,12 @@ export function formatSignedPct(n: number, digits = 1): string {
   return `${sign}${n.toFixed(digits)}%`;
 }
 
-/** Title-cases a tool_name_like_this into "Tool Name Like This". */
-export function humanizeToolName(name: string): string {
-  return name
-    .split("_")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+/** Clamps a score/share to a valid 0-100 bar width. */
+export function clampPct(n: number): number {
+  return Math.max(0, Math.min(100, n));
+}
+
+/** The `"Name (IATA)"` title used by every airport-scoped KPI card. */
+export function formatAirportTitle(name: string, iata: string): string {
+  return `${name} (${iata})`;
 }

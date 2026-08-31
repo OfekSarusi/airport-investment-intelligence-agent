@@ -33,21 +33,20 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           </div>
         </div>
 
-        {toolCalls.length > 0 ? (
-          <div className="flex flex-wrap gap-1.5 pl-1">
-            {toolCalls.map((call, i) => (
-              <ToolCallChip key={i} call={call} />
-            ))}
-          </div>
-        ) : null}
-
-        {toolCalls.length > 0 ? (
-          <div className="space-y-3 pl-1">
-            {toolCalls.map((call, i) =>
-              shouldRenderCard(call, toolCalls, i) ? <ToolResultCard key={i} call={call} /> : null,
-            )}
-          </div>
-        ) : null}
+        {toolCalls.length > 0 && (
+          <>
+            <div className="flex flex-wrap gap-1.5 pl-1">
+              {toolCalls.map((call, i) => (
+                <ToolCallChip key={i} call={call} />
+              ))}
+            </div>
+            <div className="space-y-3 pl-1">
+              {toolCalls.map((call, i) =>
+                shouldRenderCard(call, toolCalls, i) ? <ToolResultCard key={i} call={call} /> : null,
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

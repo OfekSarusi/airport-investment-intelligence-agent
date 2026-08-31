@@ -56,9 +56,17 @@ export interface CongestionIndexResult {
   weights: typeof CONGESTION_WEIGHTS;
 }
 
-/** Also a standalone KPI -- compare_airports returns this directly. */
-export function congestionIndex(airport: AirportRecord): CongestionIndexResult {
-  const uScore = utilizationScore(airport);
+/**
+ * Also a standalone KPI -- compare_airports returns this directly.
+ * `precomputedUtilizationScore` lets a caller that already has the score
+ * (investmentOpportunityScore below) skip recomputing it; either way it's
+ * the exact same number, since utilizationScore() is a pure function.
+ */
+export function congestionIndex(
+  airport: AirportRecord,
+  precomputedUtilizationScore?: number,
+): CongestionIndexResult {
+  const uScore = precomputedUtilizationScore ?? utilizationScore(airport);
   const dScore = delayScore(airport);
   const score = uScore * CONGESTION_WEIGHTS.utilization + dScore * CONGESTION_WEIGHTS.delay;
 
@@ -85,7 +93,7 @@ export interface InvestmentScoreResult {
 // 56/14/30, not the headline 35/35/30 -- intentional (see DESIGN.md).
 export function investmentOpportunityScore(airport: AirportRecord): InvestmentScoreResult {
   const uScore = utilizationScore(airport);
-  const congestion = congestionIndex(airport);
+  const congestion = congestionIndex(airport, uScore);
   const gScore = growthScore(airport);
 
   const score =

@@ -20,6 +20,13 @@ export function CardShell({
   );
 }
 
+/** Grid of StatTiles -- `compact` (used inside compare_airports, where each
+ *  side already has half the width) forces a single column instead of the
+ *  normal 4-wide layout. */
+export function StatTileGrid({ compact = false, children }: { compact?: boolean; children: ReactNode }) {
+  return <div className={`grid grid-cols-2 gap-2 ${compact ? "" : "sm:grid-cols-4"}`}>{children}</div>;
+}
+
 export function StatTile({
   label,
   value,

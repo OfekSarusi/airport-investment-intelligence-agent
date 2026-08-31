@@ -19,11 +19,9 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const isAtBottomRef = useRef(true);
 
   const scrollToBottom = useCallback((smooth: boolean) => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: smooth ? "smooth" : "auto" });
-    isAtBottomRef.current = true;
     setIsAtBottom(true);
   }, []);
 
@@ -31,16 +29,15 @@ export default function App() {
     const el = scrollRef.current;
     if (!el) return;
     const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < AT_BOTTOM_THRESHOLD_PX;
-    isAtBottomRef.current = atBottom;
     setIsAtBottom(atBottom);
   }
 
   // Only auto-follow new content if the user hasn't scrolled up to reread something.
   useEffect(() => {
-    if (isAtBottomRef.current) {
+    if (isAtBottom) {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
     }
-  }, [messages, pending]);
+  }, [messages, pending, isAtBottom]);
 
   useEffect(() => {
     savePersistedChat({ sessionId, messages });

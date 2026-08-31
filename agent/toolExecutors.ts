@@ -3,13 +3,13 @@
 import airportsData from "../data/airports.json";
 import {
   AirportRecord,
-  congestionIndex,
   investmentOpportunityScore,
   longHaulStats,
   rankAirports,
   regionOf,
   unmetDemandAnalysis,
 } from "../tools/scoring";
+import { SUPPORTED_REGIONS } from "../tools/types";
 
 const airports = airportsData as unknown as AirportRecord[];
 
@@ -23,18 +23,32 @@ function findAirport(iataCode: string): AirportRecord | undefined {
   return airports.find((a) => a.iata === code);
 }
 
+function allIataCodes(): string[] {
+  return airports.map((a) => a.iata).sort();
+}
+
 function notFound(iataCode: string): ToolExecutionResult {
   return {
     isError: true,
     result: {
       error: `No data for IATA code '${iataCode}'.`,
-      availableCodes: airports.map((a) => a.iata).sort(),
+      availableCodes: allIataCodes(),
     },
   };
 }
 
+/** Looks up an airport and runs `fn` on it, or returns the standard not-found shape. */
+function withAirport(
+  iataCode: string,
+  fn: (airport: AirportRecord) => ToolExecutionResult,
+): ToolExecutionResult {
+  const airport = findAirport(iataCode);
+  return airport ? fn(airport) : notFound(iataCode);
+}
+
 /** Bundles every computed metric for one airport into a single flat payload. */
 function fullAirportView(airport: AirportRecord) {
+  const investmentScore = investmentOpportunityScore(airport);
   return {
     iata: airport.iata,
     name: airport.name,
@@ -45,8 +59,8 @@ function fullAirportView(airport: AirportRecord) {
     runwayCount: airport.runwayCount,
     enplanements: airport.enplanements,
     capacity: airport.capacity,
-    congestionIndex: congestionIndex(airport),
-    investmentScore: investmentOpportunityScore(airport),
+    congestionIndex: investmentScore.congestion,
+    investmentScore,
     longHaul: longHaulStats(airport),
     unmetDemand: unmetDemandAnalysis(airport),
     notes: airport.notes,
@@ -54,9 +68,7 @@ function fullAirportView(airport: AirportRecord) {
 }
 
 function getAirportDetails(args: { iata_code: string }): ToolExecutionResult {
-  const airport = findAirport(args.iata_code);
-  if (!airport) return notFound(args.iata_code);
-  return { isError: false, result: fullAirportView(airport) };
+  return withAirport(args.iata_code, (airport) => ({ isError: false, result: fullAirportView(airport) }));
 }
 
 function compareAirports(args: { iata_codes: string[] }): ToolExecutionResult {
@@ -82,7 +94,7 @@ function compareAirports(args: { iata_codes: string[] }): ToolExecutionResult {
       result: {
         error: "Fewer than 2 of the requested airports were found.",
         missing,
-        availableCodes: airports.map((a) => a.iata).sort(),
+        availableCodes: allIataCodes(),
       },
     };
   }
@@ -100,7 +112,7 @@ function screenInvestmentCandidates(args: { region?: string; min_score?: number 
       result: {
         region: args.region,
         candidates: [],
-        note: `No airports found for region '${args.region}'. Currently supported region: 'New England'.`,
+        note: `No airports found for region '${args.region}'. Currently supported region(s): ${SUPPORTED_REGIONS.join(", ")}.`,
       },
     };
   }
@@ -127,21 +139,17 @@ function screenInvestmentCandidates(args: { region?: string; min_score?: number 
 }
 
 function calculateLongHaulStats(args: { iata_code: string }): ToolExecutionResult {
-  const airport = findAirport(args.iata_code);
-  if (!airport) return notFound(args.iata_code);
-  return {
+  return withAirport(args.iata_code, (airport) => ({
     isError: false,
     result: { iata: airport.iata, name: airport.name, ...longHaulStats(airport) },
-  };
+  }));
 }
 
 function getUnmetDemandAnalysis(args: { iata_code: string }): ToolExecutionResult {
-  const airport = findAirport(args.iata_code);
-  if (!airport) return notFound(args.iata_code);
-  return {
+  return withAirport(args.iata_code, (airport) => ({
     isError: false,
     result: { iata: airport.iata, name: airport.name, ...unmetDemandAnalysis(airport) },
-  };
+  }));
 }
 
 const executors: Record<string, (args: any) => ToolExecutionResult> = {

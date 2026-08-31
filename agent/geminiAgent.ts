@@ -28,14 +28,20 @@ Rules:
 - NEVER call get_airport_details after screen_investment_candidates in the same turn, including for top-ranked results -- not even one, not even the #1 result. screen_investment_candidates already returns every candidate's score and its utilization/congestion/growth components, which is everything needed to answer "which airports are strong candidates and why." Only call get_airport_details in a LATER, separate turn, and only if the user explicitly names one specific airport and asks to dig into it.
 - Always reply ENTIRELY in the same language as the user's most recent message -- from the first word to the last, with no mid-reply language switching. This tool is used primarily in English and Hebrew; default to English if the language is ambiguous. Tool results (methodology text, notes, field names) are written in English regardless of the conversation's language -- translate/paraphrase that content naturally into the reply's language rather than quoting it verbatim or drifting back into English while summarizing it. Airport names, IATA codes, and numeric values stay as-is regardless of language.`;
 
+// Cached across turns/requests -- there's no reason to construct a new SDK
+// client on every chat message, since the API key never changes at runtime.
+let client: GoogleGenAI | undefined;
+
 function requireClient(): GoogleGenAI {
+  if (client) return client;
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error(
       "GEMINI_API_KEY is not set. Get a free key at https://aistudio.google.com/apikey and set it in your environment (see .env.example).",
     );
   }
-  return new GoogleGenAI({ apiKey });
+  client = new GoogleGenAI({ apiKey });
+  return client;
 }
 
 export interface RunTurnResult {

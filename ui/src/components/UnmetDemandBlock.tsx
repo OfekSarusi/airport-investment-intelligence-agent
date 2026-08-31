@@ -1,9 +1,9 @@
 import type { UnmetDemandResult } from "../types";
 import { formatInt, formatPct } from "../lib/format";
-import { StatTile } from "./CardShell";
-import { ConfidenceBadge } from "./ConfidenceBadge";
+import { StatTile, StatTileGrid } from "./CardShell";
+import { LabeledConfidence } from "./ConfidenceBadge";
 
-export function ConstrainedPill({ constrained }: { constrained: boolean }) {
+function ConstrainedPill({ constrained }: { constrained: boolean }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-semibold ${
@@ -23,7 +23,7 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
         <span className="text-sm font-medium text-slate-700">Unmet demand</span>
         <ConstrainedPill constrained={unmet.isConstrained} />
       </div>
-      <div className={`grid grid-cols-2 gap-2 ${compact ? "" : "sm:grid-cols-4"}`}>
+      <StatTileGrid compact={compact}>
         <StatTile label="Utilization" value={formatPct(unmet.utilizationPct)} />
         <StatTile label="Current pax" value={formatInt(unmet.currentPax)} />
         <StatTile label="Projected next yr" value={formatInt(unmet.projectedNextYearPax)} />
@@ -32,7 +32,7 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
           value={formatInt(unmet.unmetPax)}
           accent={unmet.unmetPax > 0 ? "rose" : "emerald"}
         />
-      </div>
+      </StatTileGrid>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
         <span>
           Volume-constrained: <strong className="text-slate-700">{unmet.isVolumeConstrained ? "yes" : "no"}</strong>
@@ -42,12 +42,16 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
         </span>
       </div>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
-        <span className="inline-flex items-center gap-1.5">
-          Capacity figure: <ConfidenceBadge confidence={unmet.capacityConfidence} />
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          Delay figure: <ConfidenceBadge confidence={unmet.delayConfidence} />
-        </span>
+        <LabeledConfidence
+          label="Capacity figure:"
+          confidence={unmet.capacityConfidence}
+          className="inline-flex items-center gap-1.5"
+        />
+        <LabeledConfidence
+          label="Delay figure:"
+          confidence={unmet.delayConfidence}
+          className="inline-flex items-center gap-1.5"
+        />
       </div>
     </div>
   );

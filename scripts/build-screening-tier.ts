@@ -13,6 +13,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import ExcelJS from "exceljs";
+import { NATIONAL_BASELINE_DELAY_PCT } from "../tools/scoring";
 
 const OURAIRPORTS_AIRPORTS_URL =
   "https://davidmegginson.github.io/ourairports-data/airports.csv";
@@ -34,8 +35,6 @@ const FETCH_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; airport-data-pip
  * runway x a blended ~85 enplaned passengers per departure (roughly half of
  * all operations), rounded to a clean constant. */
 const ANNUAL_PASSENGERS_PER_RUNWAY = 10_000_000;
-
-const NATIONAL_DELAY_BASELINE_2024_PCT = 20.3; // BTS CY2024: 20.3% of scheduled domestic flights delayed >15min.
 
 /** The ~22 additional major US commercial airports pulled programmatically
  * for the screening tier. Chosen to round out geographic/hub-size diversity
@@ -238,14 +237,13 @@ function computeCagr(cy2019: number, cy2024: number): number {
 }
 
 async function main() {
-  console.log("Fetching OurAirports airports.csv ...");
-  const airportsCsv = await fetchText(OURAIRPORTS_AIRPORTS_URL);
-  console.log("Fetching OurAirports runways.csv ...");
-  const runwaysCsv = await fetchText(OURAIRPORTS_RUNWAYS_URL);
-  console.log("Fetching FAA CY2019 enplanements .xlsx ...");
-  const cy2019Buf = await fetchBuffer(FAA_CY2019_XLSX_URL);
-  console.log("Fetching FAA CY2024 enplanements .xlsx ...");
-  const cy2024Buf = await fetchBuffer(FAA_CY2024_XLSX_URL);
+  console.log("Fetching OurAirports airports.csv, runways.csv, and FAA CY2019/CY2024 enplanements ...");
+  const [airportsCsv, runwaysCsv, cy2019Buf, cy2024Buf] = await Promise.all([
+    fetchText(OURAIRPORTS_AIRPORTS_URL),
+    fetchText(OURAIRPORTS_RUNWAYS_URL),
+    fetchBuffer(FAA_CY2019_XLSX_URL),
+    fetchBuffer(FAA_CY2024_XLSX_URL),
+  ]);
 
   const airports = parseCsv(airportsCsv);
   const runways = parseCsv(runwaysCsv);
@@ -253,9 +251,16 @@ async function main() {
   for (const a of airports) {
     if (a.iata_code) byIata.set(a.iata_code, a);
   }
+  // Group once instead of re-scanning the whole (tens-of-thousands-row) runways
+  // list per airport inside the loop below.
+  const runwaysByAirportIdent = new Map<string, OurAirportsRow[]>();
+  for (const r of runways) {
+    const list = runwaysByAirportIdent.get(r.airport_ident);
+    if (list) list.push(r);
+    else runwaysByAirportIdent.set(r.airport_ident, [r]);
+  }
 
-  const faa2019 = await parseFaaXlsx(cy2019Buf);
-  const faa2024 = await parseFaaXlsx(cy2024Buf);
+  const [faa2019, faa2024] = await Promise.all([parseFaaXlsx(cy2019Buf), parseFaaXlsx(cy2024Buf)]);
 
   const records: ScreeningAirportRecord[] = [];
   const skipped: string[] = [];
@@ -273,7 +278,7 @@ async function main() {
       continue;
     }
 
-    const relevantRunways = runways.filter((r) => r.airport_ident === airport.ident);
+    const relevantRunways = runwaysByAirportIdent.get(airport.ident) ?? [];
     const openRunways = relevantRunways.filter((r) => r.closed !== "1");
     const runwayCount = Math.max(openRunways.length, 1); // guard against bad data: never divide capacity to 0
 
@@ -332,7 +337,7 @@ async function main() {
         pctFlightsDelayed15: estimate.delayPct15,
         year: 2024,
         metric: "approx. % of scheduled flights delayed >15min",
-        methodology: `Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns "You must be logged in") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (${NATIONAL_DELAY_BASELINE_2024_PCT}% of flights delayed) and adjusted per airport. ${estimate.note}`,
+        methodology: `Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns "You must be logged in") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (${NATIONAL_BASELINE_DELAY_PCT}% of flights delayed) and adjusted per airport. ${estimate.note}`,
         source:
           "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
         confidence: "estimated",

@@ -1,7 +1,7 @@
 import type { AirportDetails } from "../types";
-import { formatInt, formatSignedPct } from "../lib/format";
-import { CardShell, StatTile } from "./CardShell";
-import { ConfidenceBadge } from "./ConfidenceBadge";
+import { formatAirportTitle, formatInt, formatSignedPct } from "../lib/format";
+import { CardShell, StatTile, StatTileGrid } from "./CardShell";
+import { LabeledConfidence } from "./ConfidenceBadge";
 import { InvestmentCongestionBlock } from "./InvestmentCongestionBlock";
 import { LongHaulBlock } from "./LongHaulBlock";
 import { UnmetDemandBlock } from "./UnmetDemandBlock";
@@ -11,30 +11,22 @@ import { UnmetDemandBlock } from "./UnmetDemandBlock";
 export function AirportDetailsCard({ airport, compact = false }: { airport: AirportDetails; compact?: boolean }) {
   return (
     <CardShell
-      title={`${airport.name} (${airport.iata})`}
+      title={formatAirportTitle(airport.name, airport.iata)}
       subtitle={`${airport.city}, ${airport.state} - ${airport.region} - ${airport.tier} tier`}
     >
       <div className="space-y-4">
-        <div className={`grid grid-cols-2 gap-2 ${compact ? "" : "sm:grid-cols-4"}`}>
+        <StatTileGrid compact={compact}>
           <StatTile label="CY2024 enplanements" value={formatInt(airport.enplanements.cy2024)} />
           <StatTile
-            label={
-              <span className="flex items-center gap-1">
-                Capacity <ConfidenceBadge confidence={airport.capacity.confidence} />
-              </span>
-            }
+            label={<LabeledConfidence label="Capacity" confidence={airport.capacity.confidence} />}
             value={formatInt(airport.capacity.annualPassengerCapacity)}
           />
           <StatTile label="Runways" value={airport.runwayCount} />
           <StatTile
-            label={
-              <span className="flex items-center gap-1">
-                5yr CAGR <ConfidenceBadge confidence={airport.enplanements.confidence} />
-              </span>
-            }
+            label={<LabeledConfidence label="5yr CAGR" confidence={airport.enplanements.confidence} />}
             value={formatSignedPct(airport.enplanements.cagr5yr * 100)}
           />
-        </div>
+        </StatTileGrid>
 
         <InvestmentCongestionBlock
           investmentScore={airport.investmentScore}

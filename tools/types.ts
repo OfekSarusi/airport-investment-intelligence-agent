@@ -70,10 +70,16 @@ export interface AirportRecord {
 
 /** No "region" field in the data (only `state`) -- regions are a code-side lookup. */
 export const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "RI", "CT"] as const;
+const NEW_ENGLAND_REGION_NAME = "New England";
+
+/** Every region name `regionOf` can return besides the "Other" fallback --
+ *  the single place to look when adding a region, instead of hunting through
+ *  tool descriptions and error strings for hardcoded region names. */
+export const SUPPORTED_REGIONS = [NEW_ENGLAND_REGION_NAME] as const;
 
 export function regionOf(airport: Pick<AirportRecord, "state">): string {
   if ((NEW_ENGLAND_STATES as readonly string[]).includes(airport.state)) {
-    return "New England";
+    return NEW_ENGLAND_REGION_NAME;
   }
   return "Other";
 }

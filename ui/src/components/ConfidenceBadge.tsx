@@ -1,4 +1,22 @@
+import type { ReactNode } from "react";
 import type { Confidence } from "../types";
+
+/** A label paired with its confidence badge -- e.g. "Capacity [sourced]". */
+export function LabeledConfidence({
+  label,
+  confidence,
+  className = "flex items-center gap-1",
+}: {
+  label: ReactNode;
+  confidence: Confidence;
+  className?: string;
+}) {
+  return (
+    <span className={className}>
+      {label} <ConfidenceBadge confidence={confidence} />
+    </span>
+  );
+}
 
 /** Always-visible confidence indicator -- never hidden behind a tooltip. */
 export function ConfidenceBadge({ confidence }: { confidence: Confidence }) {

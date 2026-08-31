@@ -1,5 +1,7 @@
 /** A 0-100 score as a labeled horizontal bar. */
 
+import { clampPct } from "../lib/format";
+
 function barColor(score: number): string {
   if (score >= 70) return "bg-rose-500";
   if (score >= 40) return "bg-amber-500";
@@ -15,7 +17,7 @@ export function ScoreGauge({
   score: number;
   sublabel?: string;
 }) {
-  const pct = Math.max(0, Math.min(100, score));
+  const pct = clampPct(score);
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between">
@@ -35,7 +37,7 @@ export function ScoreGauge({
 
 /** A thinner sub-bar for component breakdowns nested under a ScoreGauge. */
 export function ComponentBar({ label, value }: { label: string; value: number }) {
-  const pct = Math.max(0, Math.min(100, value));
+  const pct = clampPct(value);
   return (
     <div>
       <div className="mb-0.5 flex items-baseline justify-between">

@@ -1,5 +1,7 @@
 /** Tool (function) declaration schemas Gemini reads -- no logic here, see toolExecutors.ts. */
 
+import { NEW_ENGLAND_STATES, SUPPORTED_REGIONS } from "../tools/types";
+
 export interface FunctionToolDeclaration {
   type: "function";
   name: string;
@@ -55,8 +57,7 @@ export const toolDeclarations: FunctionToolDeclaration[] = [
       properties: {
         region: {
           type: "string",
-          description:
-            "Optional region filter. Currently supported: 'New England' (ME, NH, VT, MA, RI, CT). Omit to screen the whole dataset.",
+          description: `Optional region filter. Currently supported: '${SUPPORTED_REGIONS.join(", ")}' (${NEW_ENGLAND_STATES.join(", ")}). Omit to screen the whole dataset.`,
         },
         min_score: {
           type: "number",

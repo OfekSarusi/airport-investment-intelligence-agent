@@ -1,8 +1,9 @@
 import type { LongHaulStats } from "../types";
+import { clampPct } from "../lib/format";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 
 export function LongHaulBlock({ longHaul }: { longHaul: LongHaulStats }) {
-  const pct = Math.max(0, Math.min(100, longHaul.longHaulSharePct));
+  const pct = clampPct(longHaul.longHaulSharePct);
   return (
     <div>
       <div className="mb-1 flex items-center justify-between">
