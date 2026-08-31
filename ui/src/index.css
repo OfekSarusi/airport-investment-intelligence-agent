@@ -14,6 +14,13 @@
   --color-brand-700: #274873;
   --color-brand-800: #223c5e;
   --color-brand-900: #1f334d;
+
+  /* Aviation-toned page backdrop -- replaces plain white/grey. `sky-page`
+     is the full-viewport gradient behind the floating chat card; `sky-panel`
+     is the message-stream background inside the card, a shade lighter so
+     bubbles/cards still read clearly against it. */
+  --color-sky-page: #eaf4fb;
+  --color-sky-panel: #f3f9fd;
 }
 
 html,
@@ -23,7 +30,8 @@ body,
 }
 
 body {
-  background: #f3f5f8;
+  background: linear-gradient(180deg, #dcedf9 0%, #eaf4fb 45%, #f6fbfe 100%);
+  background-attachment: fixed;
 }
 
 /* Minimal markdown styling for assistant replies (react-markdown emits

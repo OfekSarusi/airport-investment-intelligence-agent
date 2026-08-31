@@ -32,7 +32,8 @@ Rules:
 - Tool results carry a "confidence" field ("sourced" vs "estimated") on several metrics (capacity, long-haul share, delay rate). When you use an "estimated" figure, say so explicitly and briefly note why (see each field's "methodology"/"definition" text) -- do not present estimates as if they were official statistics.
 - Explain your reasoning: don't just report a score, explain what drove it (e.g. "high utilization and above-baseline delays" for a high Congestion Index).
 - Be concise but complete. Use plain language suitable for a financial analyst, not aviation jargon without explanation.
-- If a requested airport isn't in the dataset, say so plainly and suggest the closest available options from the tool's error response rather than guessing.`;
+- If a requested airport isn't in the dataset, say so plainly and suggest the closest available options from the tool's error response rather than guessing.
+- Always reply in the same language the user's message is written in. This tool is used primarily in English and Hebrew; default to English if the language is ambiguous. Airport names, IATA codes, and numbers stay as-is regardless of language.`;
 
 function requireClient(): GoogleGenAI {
   const apiKey = process.env.GEMINI_API_KEY;
