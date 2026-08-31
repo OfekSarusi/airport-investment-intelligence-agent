@@ -1,89 +1,128 @@
 # Airport Investment Intelligence Agent
 
-An AI-powered chat agent that helps investment analysts identify US airports where renovation or terminal expansion is likely to be most profitable — based on **deterministic KPIs** (capacity utilization, congestion, growth trends, unmet demand), narrated in plain language by an LLM that never invents a number.
+## Overview
 
-For the full architecture, scoring formulas, and the reasoning behind every major decision, see **[DESIGN.md](./DESIGN.md)**.
+Airport Investment Intelligence Agent is a chat-based analytics tool for identifying US airports where terminal expansion or renovation is likely to be most profitable. It combines a deterministic scoring engine (capacity utilization, congestion, growth, unmet demand) with a Gemini-powered chat assistant that explains the results in plain language — the AI never computes or invents a number, it only narrates what the scoring engine already calculated.
 
-## What it can answer
+The system includes:
 
-- *"Which airports in New England are strong candidates for terminal expansion?"*
-- *"Compare LAX and Santa Ana airport congestion levels."*
-- *"What is the percentage of long-haul flights out of Anchorage airport?"*
-- *"What is the unmet flight demand at SFO and why?"*
-- ...plus natural follow-up questions in the same conversation.
+**React Frontend**
+A chat interface for querying airport investment data — message stream, tool-call badges showing which deterministic calculation ran, and visual KPI/score breakdown cards. Served together with the API.
 
-## Quickstart (Docker — recommended)
+**Express Backend**
+A REST API that runs the Gemini agent loop: receives chat messages, calls Gemini with function-calling tools, executes those tools against the scoring engine, and returns the model's narrated answer.
 
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) running, and a free Gemini API key.
+**Deterministic Scoring Engine**
+Pure TypeScript functions (no LLM, no I/O) that compute Congestion Index, Investment Opportunity Score, unmet-demand analysis, and long-haul route share from the airport dataset.
 
-1. Get a free key at **[aistudio.google.com/apikey](https://aistudio.google.com/apikey)**.
-2. Copy the example env file and add your key:
-   ```bash
-   cp .env.example .env
-   # then edit .env and set GEMINI_API_KEY=...
-   ```
-3. Build and run:
-   ```bash
-   docker compose up --build
-   ```
-4. Open **[http://localhost:3000](http://localhost:3000)**.
+**Airport Dataset**
+38 US airports with passenger volume, runway/capacity data, growth trends, and delay estimates — each field labeled `sourced` or `estimated` depending on data availability. See [DESIGN.md](./DESIGN.md).
 
-That's it — one container serves both the chat UI and the API.
+**Gemini Agent**
+A function-calling agent (`gemini-3.5-flash-lite`) exposing 5 tools that query the scoring engine — it never runs its own calculations.
 
-## Environment variables
+## Key Features
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `GEMINI_API_KEY` | Yes | — | Free key from [Google AI Studio](https://aistudio.google.com/apikey). Without it, `/api/chat` returns an error. |
-| `PORT` | No | `3000` | Port the backend (and, in Docker, the whole app) listens on. |
+- **Deterministic investment scoring** — Congestion Index and Investment Opportunity Score computed by pure functions, independent of the LLM
+- **Unmet-demand analysis** — flags capacity strain from either raw passenger-volume growth or elevated delays, with a plain-language "why"
+- **AI chat assistant** — natural-language questions and follow-ups, powered by Gemini function-calling
+- **Confidence-labeled data** — every KPI is visibly marked `sourced` or `estimated` in the UI, never hidden
+- **Fully Dockerized** — a single `docker compose up --build` brings up the entire app
 
-## Running locally without Docker (development)
+## Getting Started
 
-Two processes, in two terminals, from the repo root:
+### Prerequisites
+
+- Docker and Docker Compose
+
+### Step 1 — Create the environment file
+
+All configuration lives in a single `.env` file at the project root. Copy the example and fill in your key:
+
+For Mac:
+```bash
+cp .env.example .env
+```
+
+For Windows:
+```bash
+copy .env.example .env
+```
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here   # required — get one free at Google AI Studio
+PORT=3000                                 # optional, defaults to 3000
+```
+
+The only value you must provide is the Gemini API key. Get one for free at **[Google AI Studio](https://aistudio.google.com/apikey)** — no billing setup required.
+
+### Step 2 — Build and run
+
+Make sure Docker Desktop is running, then:
 
 ```bash
-# Terminal 1 — backend (Express + the Gemini agent), port 3000
-npm install
-npm run server:dev
-
-# Terminal 2 — frontend (React + Vite dev server, with hot reload), port 5173
-cd ui
-npm install
-npm run dev
+docker compose up --build
 ```
 
-Then open **[http://localhost:5173](http://localhost:5173)** (it proxies API calls to port 3000).
+`--build` rebuilds the image from source (needed on first run or after code changes). The first build takes a few minutes; after that, the app is ready:
 
-Useful scripts:
-
-| Command | What it does |
+| Service | URL |
 |---|---|
-| `npm run server:dev` | Runs the backend (`ts-node server/index.ts`) |
-| `npm run score:smoke` | Runs the scoring engine directly against real data, prints results for all 4 test cases — no Gemini call needed |
-| `npm run build-screening-tier` | Regenerates the script-built portion of `data/airports.json` |
-| `cd ui && npm run dev` | Frontend dev server with hot reload |
-| `cd ui && npm run build` | Production build of the UI (this is what Docker runs automatically) |
+| Chat UI + API | http://localhost:3000 |
 
-## Project structure
+### Stopping the app
 
-```
-data/           Static airport dataset (data/airports.json) + the source files behind it
-tools/          Deterministic scoring engine — pure functions, no LLM, no I/O
-agent/          Gemini tool declarations, tool execution, and the conversation loop
-server/         Express API (serves both /api/* and the built UI in production)
-ui/             React + Vite + Tailwind chat interface (its own package.json)
-scripts/        One-off data-build scripts
-research/       Notes on the public data sources used and their access limits
+```bash
+docker compose down
 ```
 
-## A note on the data
+## Notes
 
-Every non-trivial number in this app is labeled `sourced` (backed by a cited public dataset) or `estimated` (a documented, reasoned approximation, used where the ideal data source wasn't accessible). The chat UI shows this as a visible badge next to the relevant figure. See [DESIGN.md §2 and §6](./DESIGN.md) for exactly which fields are which, and why.
+- Docker is the recommended and only officially supported way to run the full app — one container serves both the API and the chat UI.
+- `GEMINI_API_KEY` is the one thing you must supply; everything else (the airport dataset, scoring logic) is already in the repo.
 
-## Deliverables checklist
+## Verifying the scoring engine
 
-- ✅ Source code (this repo)
-- ✅ Deterministic scoring/ranking logic, independent of the LLM (`tools/scoring.ts`)
-- ✅ Chat interface (`ui/`)
-- ✅ Design document with scoring methodology, tradeoffs, and AI usage boundaries (`DESIGN.md`)
-- ⏳ Voice input — optional bonus, best-effort only if time remains
+The deterministic scoring engine can be checked directly against the real dataset, without a Gemini key or the chat UI:
+
+```bash
+npm install
+npm run score:smoke
+```
+
+This runs `tools/scoring.ts` against `data/airports.json` and prints results for all 4 assignment test cases. It's a lightweight verification script, not a full automated test suite — adding proper tests is a planned follow-up.
+
+## Project Structure
+
+```
+airport-investment-intelligence-agent/
+├── data/
+│   ├── airports.json          # The dataset the app actually reads (38 airports)
+│   └── full-tier.json         # Hand-curated source for the 16 "full" airports
+├── tools/
+│   ├── scoring.ts             # Deterministic scoring engine (pure functions)
+│   ├── types.ts               # Airport record types
+│   └── scoring.smoke.ts       # Verification script (npm run score:smoke)
+├── agent/
+│   ├── tools.ts                # Gemini tool schemas (no logic)
+│   ├── toolExecutors.ts        # Tool implementations, call into tools/scoring.ts
+│   ├── geminiAgent.ts           # Orchestration loop + system prompt
+│   └── sessionStore.ts          # In-memory conversation state
+├── server/
+│   └── index.ts                # Express API (serves /api/* and the built UI)
+├── ui/
+│   ├── src/components/          # Chat bubbles, KPI cards, confidence badges
+│   ├── src/lib/                 # Client-side helpers (persistence, typing effect)
+│   └── package.json             # Separate frontend package (Vite + React)
+├── scripts/
+│   └── build-screening-tier.ts  # Regenerates the script-built part of the dataset
+├── research/
+│   └── aviation-data-sources.md # Notes on public data sources and their limits
+├── Dockerfile
+├── docker-compose.yml
+└── DESIGN.md                    # Scoring methodology, tradeoffs, AI usage boundaries
+```
+
+## Author
+
+Ofek Sarusi
