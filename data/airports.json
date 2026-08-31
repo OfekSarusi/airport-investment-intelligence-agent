@@ -1,0 +1,2102 @@
+[
+  {
+    "iata": "ANC",
+    "icao": "PANC",
+    "name": "Ted Stevens Anchorage International Airport",
+    "city": "Anchorage",
+    "state": "AK",
+    "lat": 61.179004,
+    "lon": -149.992561,
+    "elevationFt": 152,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31: https://davidmegginson.github.io/ourairports-data/airports.csv, https://davidmegginson.github.io/ourairports-data/runways.csv",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "M",
+      "label": "Medium hub"
+    },
+    "enplanements": {
+      "cy2019": 2713843,
+      "cy2024": 2767856,
+      "cagr5yr": 0.0039,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports: https://www.faa.gov/sites/faa.gov/files/airports/planning_capacity/passenger_allcargo_stats/passenger/cy19-commercial-service-enplanements.xlsx and https://www.faa.gov/airports/planning_capacity/passenger_allcargo_stats/passenger/arp-cy2024-commercial-service-enplanements.xlsx",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. The 10M/runway constant is derived from: FAA AC 150/5060-5 'Airport Capacity and Delay' benchmark hourly capacity of ~50-60 operations/hour for a single independently-operated runway; assumed practical annual utilization of ~250,000 operations/year for a well-utilized single runway (consistent with the range single-runway airports such as London Gatwick, the world's busiest single-runway airport, approach in practice); and a blended US industry average of ~85 enplaned passengers per departure (roughly half of all operations) from BTS/FAA air carrier statistics. 250,000 ops * 0.5 * 85 pax ~= 10.6M, rounded to 10M for a clean uniform constant applied identically to every airport regardless of runway configuration, aircraft mix, or terminal/gate constraints. This is an explicit planning-level estimate, not an authoritative figure -- actual terminal design capacity is not published in any public dataset (see ticket #3 resolution).",
+      "source": "Derived heuristic; see methodology field. Anchor benchmarks: FAA AC 150/5060-5; industry commentary on Gatwick's single-runway throughput (~40-45M annual passengers, ~275-285k annual movements) as an upper-bound reference point.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 9.23,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix; see confidence note).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "BTS T-100 Domestic/International Segment microdata (which would give a true flight/passenger-weighted long-haul share) is not fetchable by an automated script in this environment: the TranStats web UI requires an interactive multi-step form submission with no documented direct-download URL, and the Socrata-based datahub.transportation.gov API for the same table returns 'You must be logged in to access this resource' for unauthenticated requests. As a pragmatic 1-day-scope substitute, long-haul share is approximated from each airport's current unique nonstop destination list (~62 destinations for ANC as of Aug 2026, per FlightConnections/Flightradar24), counting destinations with typical nonstop distance >=2000 miles. For ANC this is essentially one route: Condor's Anchorage-Frankfurt service (~4,330 mi), plus occasional seasonal Alaska Airlines Honolulu service. Despite ANC being one of the world's busiest CARGO airports by landed weight, its PASSENGER long-haul share is low -- most passenger traffic is short/medium-haul intra-Alaska and Lower-48 connections.",
+      "source": "FlightConnections/Flightradar24 destination lists (accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 15,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights arriving >15 minutes late",
+      "methodology": "BTS On-Time Performance / Air Travel Consumer Report per-airport annual rankings could not be bulk-downloaded in this environment (bts.gov and transportation.gov PDF/XLSX report links return HTTP 403 to automated fetches; the Socrata datahub.transportation.gov API requires login). National CY2024 baseline was independently confirmed via press synthesis of BTS data: 20.3% of scheduled domestic flights delayed >15min, 78.10% on-time arrival rate. ANC's estimate is set below the national baseline because it is a medium-hub airport without ANC-specific commercial passenger operations at the intensity that drives delay at major connecting hubs (its congestion, when it occurs, is more often cargo-ramp/weather driven and not well captured by passenger OTP frameworks).",
+      "source": "BTS Air Travel Consumer Report / national CY2024 on-time performance baseline (20.3% delayed, 78.1% on-time), via https://www.bts.gov/newsroom/air-travel-consumer-report-december-2024-full-year-2024-numbers and press synthesis; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful, year-round certificated-carrier commercial passenger service (FAA CY2024 enplanements: 2,767,856; FAA hub classification: Medium hub) -- retained in the full tier as one of the assignment's 4 mandatory test-case airports.",
+      "Capacity-utilization ratio likely UNDERSTATES ANC's true operational congestion: a large share of ANC's runway capacity is consumed by all-cargo widebody freighter operations (ANC is consistently ranked among the world's top 5 cargo airports by landed weight), which this passenger-only heuristic does not account for."
+    ]
+  },
+  {
+    "iata": "SFO",
+    "icao": "KSFO",
+    "name": "San Francisco International Airport",
+    "city": "San Francisco",
+    "state": "CA",
+    "lat": 37.619806,
+    "lon": -122.374821,
+    "elevationFt": 13,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 27779230,
+      "cy2024": 25078968,
+      "cagr5yr": -0.0202,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation (FAA AC 150/5060-5 hourly benchmark + assumed annual utilization + blended enplaned-per-departure average).",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 62.7,
+    "routeMix": {
+      "longHaulSharePct": 31,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC (T-100 microdata not fetchable; see ANC record). SFO serves roughly 90 nonstop destinations; approximately 28 are long-haul (~12 transpacific Asia destinations incl. Tokyo/Seoul/Shanghai/Hong Kong/Singapore/Taipei, ~10 transatlantic Europe destinations, a handful of Middle East/Oceania/South America routes, plus a few domestic transcontinental routes to the NYC/Boston area that clear the 2,000-mile threshold).",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 29.5,
+      "year": 2024,
+      "metric": "% of scheduled flights delayed (BTS-derived, CY2024)",
+      "methodology": "SFO is one of the few airports for which a specific, citable CY2024 per-airport delay figure surfaced during research (SFO topped a 2024 delay ranking derived from BTS data at ~29.5% of flights delayed), well above the CY2024 national baseline of 20.3%. This tracks with SFO's well-documented structural congestion driver: its two pairs of closely-spaced parallel runways cannot be used independently in low-visibility/marine-layer fog conditions, materially cutting arrival capacity on foggy days.",
+      "source": "Press synthesis of BTS CY2024 on-time performance data (e.g. 'US Airports Ranked by Delayed Flights (2024)' aggregation, accessed Aug 2026); BTS Air Travel Consumer Report national baseline",
+      "confidence": "sourced"
+    },
+    "notes": [
+      "One of the assignment's 4 mandatory test-case airports (SFO 'unmet demand').",
+      "SFO's chronic delay rate combined with high (62.7%) and rising capacity-utilization pressure, on a fixed 4-runway field with essentially no room to add parallel runways (bounded by San Francisco Bay), is the core 'unmet demand' story: fog-driven capacity loss compounds ordinary demand growth."
+    ]
+  },
+  {
+    "iata": "LAX",
+    "icao": "KLAX",
+    "name": "Los Angeles International Airport",
+    "city": "Los Angeles",
+    "state": "CA",
+    "lat": 33.942501,
+    "lon": -118.407997,
+    "elevationFt": 125,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 42939104,
+      "cy2024": 37760834,
+      "cagr5yr": -0.0254,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 94.4,
+    "routeMix": {
+      "longHaulSharePct": 41,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. LAX serves roughly 85 nonstop destinations; approximately 35 clear the 2,000-mile threshold: ~10 Asia (Tokyo Haneda/Narita, Seoul, Shanghai, Beijing, Shenzhen, Hong Kong, Manila, Singapore, Taipei, Osaka), ~12 Europe/Middle East (London, Paris, Frankfurt, Munich, Madrid, Rome, Amsterdam, Vienna, Copenhagen, Dublin, Dubai, Doha), ~4 Oceania (Sydney, Melbourne, Brisbane, Auckland), ~3 South America (Sao Paulo, Lima, Santiago), plus domestic transcontinental/Hawaii/far-Caribbean routes (JFK, EWR, BOS, Honolulu, etc.).",
+      "source": "Wikipedia 'Los Angeles International Airport' airline destinations table (accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 22,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No single clean LAX-specific annual BTS figure surfaced during research; press coverage of 2024 BTS data flagged specific LAX routes (e.g. JFK-LAX) as having some of the highest domestic route-level delay rates (~35%), but that is a route statistic, not an airport-wide one. Estimate is set modestly above the CY2024 national baseline (20.3%) reflecting LAX's dense terminal-area airspace shared with four other major Southern California airports, without assuming the highest-tier congestion of e.g. the NYC airports.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; qualitative route-delay press coverage. Airport-wide figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "One of the assignment's 4 mandatory test-case airports (LAX vs SNA congestion comparison).",
+      "94.4% estimated capacity utilization on only 4 runways (arranged as two closely-spaced pairs) makes LAX the clearest capacity-constrained major hub in this dataset -- consistent with its real-world reputation and decades of unrealized additional-runway proposals."
+    ]
+  },
+  {
+    "iata": "SNA",
+    "icao": "KSNA",
+    "name": "John Wayne Airport (Orange County)",
+    "city": "Santa Ana",
+    "state": "CA",
+    "lat": 33.675063,
+    "lon": -117.869281,
+    "elevationFt": 56,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "M",
+      "label": "Medium hub"
+    },
+    "enplanements": {
+      "cy2019": 5153276,
+      "cy2024": 5370273,
+      "cagr5yr": 0.0083,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 26.9,
+    "routeMix": {
+      "longHaulSharePct": 5,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. SNA serves roughly 43-46 nonstop destinations (FlightConnections/Directflights, accessed Aug 2026), essentially all domestic plus a small number of Mexico charter routes. Only a couple of JetBlue transcontinental routes (JFK ~2,455 mi, BOS ~2,611 mi) clear the 2,000-mile threshold -- both are domestic, not international; SNA has no scheduled true intercontinental long-haul service.",
+      "source": "FlightConnections/Directflights destination counts (accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 16,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No SNA-specific BTS figure surfaced during research. Estimate is set modestly below the CY2024 national baseline (20.3%), consistent with SNA's status as a slot/operations-capped airport (see Access Plan note below) where scheduled capacity is deliberately kept below what the field could otherwise handle, generally easing schedule-driven congestion relative to unconstrained hubs.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "One of the assignment's 4 mandatory test-case airports (LAX vs SNA congestion comparison).",
+      "SNA's low (26.9%) estimated capacity utilization is an artifact of REGULATORY constraint, not spare physical capacity: John Wayne Airport operates under a county Access Plan / General Aviation Noise Ordinance that caps annual average daily commercial departures and restricts night operations (22:00-07:00, 23:00-08:00 Sundays) for noise mitigation in a dense residential area. This is the key qualitative contrast with LAX for any 'why is LAX more congested than SNA' narration: SNA is artificially capped, not merely under-demanded."
+    ]
+  },
+  {
+    "iata": "BOS",
+    "icao": "KBOS",
+    "name": "Boston Logan International Airport",
+    "city": "Boston",
+    "state": "MA",
+    "lat": 42.36197,
+    "lon": -71.0079,
+    "elevationFt": 20,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 6,
+    "runwayCountTotal": 6,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 20699377,
+      "cy2024": 21090721,
+      "cagr5yr": 0.0038,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 60000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation. Note BOS's 6 runways include several short crosswind runways (as short as 2,557 ft) rarely used by mainline jet traffic; this uniform heuristic does not distinguish runway usability by aircraft type, a known limitation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 35.2,
+    "routeMix": {
+      "longHaulSharePct": 17,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. BOS serves over 100 nonstop destinations with substantial transatlantic service (~15-18 European destinations incl. London, Dublin, Paris, Reykjavik, Lisbon, Madrid, plus limited Middle East/Asia), plus West Coast domestic transcontinental routes (SFO, LAX, SEA, SAN, PDX) that also clear 2,000 miles.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 24,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Research surfaced specific 2024 monthly comparisons showing BOS running above the national delay rate (e.g. July 2024: BOS 30.83% vs. national 28.63%; May 2024: BOS 30.10% vs. national 25.30%). Annual estimate is built by applying a comparable ~4-point premium over the CY2024 annual national baseline (20.3%).",
+      "source": "Monthly BTS-derived delay-rate comparisons for BOS vs. national (accessed Aug 2026, via airport delay-tracking aggregator citing BTS); BTS Air Travel Consumer Report national CY2024 baseline",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "All 7 New England commercial airports covering all 6 New England states (BOS/MA, PVD/RI, BDL/CT, MHT/NH, PWM/ME, BGR/ME, BTV/VT) were verified to have real FAA CY2024 scheduled-carrier enplanement data and are retained in the full tier -- none were dropped. BOS is by far the largest and most internationally connected of the seven."
+    ]
+  },
+  {
+    "iata": "PVD",
+    "icao": "KPVD",
+    "name": "Rhode Island T.F. Green International Airport",
+    "city": "Warwick",
+    "state": "RI",
+    "lat": 41.725038,
+    "lon": -71.425668,
+    "elevationFt": 55,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "S",
+      "label": "Small hub"
+    },
+    "enplanements": {
+      "cy2019": 1969775,
+      "cy2024": 1984916,
+      "cagr5yr": 0.0015,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 9.9,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. PVD serves roughly 40 nonstop destinations across 9 airlines (accessed Aug 2026); verified via search that the only intercontinental service is a Cabo Verde Airlines route to Cabo Verde, West Africa (~2,900 mi), plus Caribbean routes that mostly fall short of 2,000 miles. Approx. 1 of 40 destinations qualifies as long-haul.",
+      "source": "Airline/destination counts (accessed Aug 2026, incl. reference to scheduled Cabo Verde Airlines service); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 17,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No PVD-specific BTS figure surfaced during research. Estimate is set near the CY2024 national baseline (20.3%), consistent with PVD's status as an uncongested small-hub airport with two long runways and no history of chronic capacity-driven delay.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful scheduled commercial passenger service (FAA CY2024 enplanements: 1,984,916; FAA hub classification: Small hub; 9 airlines to ~40 destinations as of Aug 2026) -- retained in the full tier."
+    ]
+  },
+  {
+    "iata": "BDL",
+    "icao": "KBDL",
+    "name": "Bradley International Airport",
+    "city": "Windsor Locks (Hartford)",
+    "state": "CT",
+    "lat": 41.938555,
+    "lon": -72.688016,
+    "elevationFt": 173,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31 -- 1 of 3 listed runways is marked closed",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "M",
+      "label": "Medium hub"
+    },
+    "enplanements": {
+      "cy2019": 3323614,
+      "cy2024": 3285194,
+      "cagr5yr": -0.0023,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000, using the 2 currently-open runways. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 16.4,
+    "routeMix": {
+      "longHaulSharePct": 2,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. BDL serves roughly 43 nonstop destinations across 9 airlines (accessed Aug 2026). The only true long-haul route identified is Aer Lingus's nonstop to Dublin, Ireland (~3,068 mi); Caribbean routes mostly fall short of 2,000 miles. Approx. 1 of 43 destinations qualifies as long-haul.",
+      "source": "Airline/destination counts (accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 17,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No BDL-specific BTS figure surfaced during research. Estimate is set near the CY2024 national baseline (20.3%), consistent with BDL's status as an uncongested medium-hub airport.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful scheduled commercial passenger service (FAA CY2024 enplanements: 3,285,194; FAA hub classification: Medium hub) -- retained in the full tier."
+    ]
+  },
+  {
+    "iata": "MHT",
+    "icao": "KMHT",
+    "name": "Manchester-Boston Regional Airport",
+    "city": "Manchester",
+    "state": "NH",
+    "lat": 42.932598,
+    "lon": -71.435699,
+    "elevationFt": 266,
+    "tier": "full",
+    "ourAirportsType": "medium_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "S",
+      "label": "Small hub"
+    },
+    "enplanements": {
+      "cy2019": 852321,
+      "cy2024": 633257,
+      "cagr5yr": -0.0577,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 3.2,
+    "routeMix": {
+      "longHaulSharePct": 0,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. MHT serves 14 nonstop destinations, all domestic U.S., across 4 airlines (American, Breeze, Southwest, United) as of Aug 2026; the longest is Fort Myers, FL at ~1,272 miles. No destination clears the 2,000-mile threshold.",
+      "source": "Airline/destination counts (accessed Aug 2026)",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 14,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No MHT-specific BTS figure surfaced during research. Estimate is set below the CY2024 national baseline (20.3%), consistent with MHT's status as a small, uncongested airport far from major hub connecting banks.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful scheduled commercial passenger service (FAA CY2024 enplanements: 633,257; FAA hub classification: Small hub) -- retained in the full tier, though it is worth flagging that MHT's enplanements fell substantially (-5.8% CAGR 2019-2024, the steepest decline of any New England airport in this dataset), reflecting well-documented post-pandemic capacity pullbacks and route consolidation."
+    ]
+  },
+  {
+    "iata": "PWM",
+    "icao": "KPWM",
+    "name": "Portland International Jetport",
+    "city": "Portland",
+    "state": "ME",
+    "lat": 43.646198,
+    "lon": -70.309303,
+    "elevationFt": 76,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "S",
+      "label": "Small hub"
+    },
+    "enplanements": {
+      "cy2019": 1088728,
+      "cy2024": 1221913,
+      "cagr5yr": 0.0233,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 6.1,
+    "routeMix": {
+      "longHaulSharePct": 0,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. PWM serves 41 nonstop destinations across 7 airlines (accessed Aug 2026), currently all domestic. PWM previously had a seasonal transatlantic PLAY Airlines route to Reykjavik, Iceland (~2,720 mi), but PLAY ceased all operations on 2025-09-29; PWM currently has no scheduled long-haul service.",
+      "source": "Airline/destination counts (accessed Aug 2026); PLAY Airlines cessation confirmed via Wikipedia 'Play (airline)'",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 14,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No PWM-specific BTS figure surfaced during research. Estimate is set below the CY2024 national baseline (20.3%), consistent with PWM's status as a small, uncongested airport.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful scheduled commercial passenger service (FAA CY2024 enplanements: 1,221,913; FAA hub classification: Small hub; growing at +2.3% CAGR, the strongest of the New England small airports) -- retained in the full tier.",
+      "PWM lost its only long-haul route (seasonal transatlantic to Reykjavik via PLAY) when PLAY Airlines ceased operations in September 2025 -- worth noting if longHaulSharePct is compared against any pre-2025 reference data, which would have shown a nonzero value."
+    ]
+  },
+  {
+    "iata": "BGR",
+    "icao": "KBGR",
+    "name": "Bangor International Airport",
+    "city": "Bangor",
+    "state": "ME",
+    "lat": 44.806364,
+    "lon": -68.826668,
+    "elevationFt": 192,
+    "tier": "full",
+    "ourAirportsType": "medium_airport",
+    "runwayCount": 1,
+    "runwayCountTotal": 1,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "N",
+      "label": "Nonhub (primary)"
+    },
+    "enplanements": {
+      "cy2019": 325160,
+      "cy2024": 376456,
+      "cagr5yr": 0.0297,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 10000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. BGR's single runway (11,440 ft, a former SAC bomber base runway) is a notable case where physical runway capability (long enough for any commercial aircraft, historically used as a transatlantic diversion/refueling field) far exceeds the traffic BGR actually needs -- illustrating a general limitation of a pure runway-count heuristic. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 3.76,
+    "routeMix": {
+      "longHaulSharePct": 0,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. BGR's scheduled commercial destinations (Allegiant, American, Breeze, Delta, United, per flybangor.com, accessed Aug 2026) are all short/medium-haul domestic: year-round to NYC, Orlando/Sanford, Philadelphia, Tampa/St. Pete, Washington DC; seasonal to Atlanta, Charlotte, Chicago, Denver, Detroit, Fort Lauderdale, Punta Gorda. None clears the 2,000-mile threshold (longest is roughly Denver at ~1,770 mi). Note: BGR is historically notable as a transatlantic charter/military/diversion refueling stop -- that traffic is not scheduled passenger service and is excluded here.",
+      "source": "flybangor.com airline/destinations page (accessed Aug 2026)",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 12,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No BGR-specific BTS delay figure surfaced during research (one press aggregation did flag Bangor as having an elevated CANCELLATION rate, >=3% in 2024, likely weather-driven given its northern New England location -- distinct from the delay-rate metric used here). Delay-rate estimate is set below the CY2024 national baseline (20.3%), consistent with BGR's status as a very low-traffic nonhub airport.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Verified as having meaningful scheduled commercial passenger service (FAA CY2024 enplanements: 376,456; FAA 'Nonhub primary' classification -- the smallest FAA primary-airport tier, still above the 10,000 annual enplanement threshold that defines a primary commercial service airport) -- retained in the full tier.",
+      "BGR has the smallest passenger volumes of the 6 New England airports but was NOT dropped: it has year-round mainline service from 5 certificated carriers, which is materially more commercial service than a general-aviation-only field."
+    ]
+  },
+  {
+    "iata": "BTV",
+    "icao": "KBTV",
+    "name": "Patrick Leahy Burlington International Airport",
+    "city": "Burlington",
+    "state": "VT",
+    "lat": 44.471901,
+    "lon": -73.153297,
+    "elevationFt": 335,
+    "tier": "full",
+    "ourAirportsType": "medium_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "S",
+      "label": "Small hub"
+    },
+    "enplanements": {
+      "cy2019": 687436,
+      "cy2024": 670636,
+      "cagr5yr": -0.0049,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 3.35,
+    "routeMix": {
+      "longHaulSharePct": 0,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. BTV serves 19 nonstop destinations across 5 airlines (American, Breeze, Delta, Sun Country, United) as of Aug 2026 -- all domestic, concentrated in the Northeast/Mid-Atlantic/Southeast plus a seasonal Minneapolis route. None clears the 2,000-mile threshold.",
+      "source": "Airline/destination counts (accessed Aug 2026)",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 15,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No BTV-specific BTS figure surfaced during research. Estimate is set below the CY2024 national baseline (20.3%), consistent with BTV's status as a small, uncongested airport, though northern-New-England winter weather is a known periodic disruptor (see also BGR's cancellation-rate note).",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; airport-specific figure is an estimate, not a directly reported BTS number.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Added to the full tier so all 6 New England states are represented by at least one real, sourced airport: BTV is Vermont's primary commercial airport (FAA CY2024 enplanements: 670,636; FAA hub classification: Small hub; 5 airlines to 19 destinations as of Aug 2026).",
+      "Together with BOS, PVD, BDL, MHT, PWM, and BGR, BTV completes coverage of all 6 New England states (MA, RI, CT, NH, ME, VT) in this dataset."
+    ]
+  },
+  {
+    "iata": "JFK",
+    "icao": "KJFK",
+    "name": "John F. Kennedy International Airport",
+    "city": "New York",
+    "state": "NY",
+    "lat": 40.639447,
+    "lon": -73.779317,
+    "elevationFt": 13,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 31036655,
+      "cy2024": 31466102,
+      "cagr5yr": 0.0028,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 78.7,
+    "routeMix": {
+      "longHaulSharePct": 36,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. JFK serves upwards of 140 nonstop destinations as one of the largest international gateways in the US; roughly 50 clear the 2,000-mile threshold across Europe (~25), Asia (~10), the Middle East (~5), Africa (~3), South America (~8), and Oceania, plus West Coast domestic transcon routes.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 27,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Press coverage of 2024 BTS data specifically characterized JFK as 'the worst U.S. airport for delays' when weighting both frequency and average minutes late, though a single clean annual percentage was not located. Estimate is set well above the CY2024 national baseline (20.3%) reflecting that qualitative ranking and JFK's well-documented exposure to congested New York-area airspace shared with EWR and LGA.",
+      "source": "Press synthesis of BTS CY2024 data ranking JFK as worst for delays (accessed Aug 2026); BTS Air Travel Consumer Report national CY2024 baseline. Not a directly reported single BTS percentage.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Included as a major anchor airport for comparison pool breadth (large-hub, high-long-haul-share, high-delay reference point)."
+    ]
+  },
+  {
+    "iata": "ORD",
+    "icao": "KORD",
+    "name": "Chicago O'Hare International Airport",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.9786,
+    "lon": -87.9048,
+    "elevationFt": 680,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 8,
+    "runwayCountTotal": 11,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31 -- 3 of 11 listed runways are marked closed (decommissioned under the O'Hare Modernization Program)",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 40871223,
+      "cy2024": 38575693,
+      "cagr5yr": -0.0115,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 80000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000, using the 8 currently-open runways. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 48.2,
+    "routeMix": {
+      "longHaulSharePct": 16,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. ORD serves close to 190 nonstop destinations as a major domestic connecting hub; roughly 30 clear 2,000 miles across Europe (~15), Asia (~8), the Middle East, and South America.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 25,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No single clean ORD-specific annual BTS figure surfaced during research. Estimate is set above the CY2024 national baseline (20.3%), consistent with ORD's well-documented exposure to Midwest convective-weather delay programs and its position as one of the busiest and most complex multi-runway hub operations in the country, despite the O'Hare Modernization Program's runway reconfiguration intended to reduce delay.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; qualitative characterization from FAA/BTS commentary on hub delay drivers. Not a directly reported BTS percentage.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Included as a major anchor airport for comparison pool breadth."
+    ]
+  },
+  {
+    "iata": "ATL",
+    "icao": "KATL",
+    "name": "Hartsfield-Jackson Atlanta International Airport",
+    "city": "Atlanta",
+    "state": "GA",
+    "lat": 33.6367,
+    "lon": -84.428101,
+    "elevationFt": 1026,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 5,
+    "runwayCountTotal": 5,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 53505795,
+      "cy2024": 52511402,
+      "cagr5yr": -0.0037,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 50000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 105,
+    "routeMix": {
+      "longHaulSharePct": 16,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. ATL serves over 220 nonstop destinations as the world's busiest airport by enplanements; roughly 35 clear 2,000 miles across Europe (~15), Africa (~5, a Delta specialty), South America (~8), Asia (~5), and the Middle East.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 18.4,
+      "year": 2024,
+      "metric": "% of scheduled flights delayed >15min (derived from a reported 81.6% on-time domestic-arrival rate)",
+      "methodology": "A specific 2024 figure surfaced during research: Atlanta's domestic arrivals were reported at about 81.6% on-time in 2024 (implying ~18.4% delayed), despite ATL handling more than 340,000 domestic arrivals -- notably BETTER than the CY2024 national baseline (20.3% delayed) despite ATL's massive traffic volume, reflecting Delta's extensive scheduling buffer and ATL's highly efficient 5-runway triple-independent-approach layout.",
+      "source": "Press synthesis of BTS CY2024 data (accessed Aug 2026, reporting ATL's ~81.6% on-time domestic arrival rate)",
+      "confidence": "sourced"
+    },
+    "notes": [
+      "Included as a major anchor airport for comparison pool breadth.",
+      "Estimated capacity utilization exceeds 100% (105%), which should be read as a signal of this heuristic's limitation rather than literal physical overcapacity: ATL's 5 runways, arranged for near-simultaneous independent operations in a favorable low-terrain, low-fog climate, sustain materially higher real-world throughput per runway than the flat 10M-passenger-per-runway constant assumes. This is a useful illustration, for DESIGN.md, of why the capacity figures here are explicitly labeled 'estimated'."
+    ]
+  },
+  {
+    "iata": "DFW",
+    "icao": "KDFW",
+    "name": "Dallas Fort Worth International Airport",
+    "city": "Dallas-Fort Worth",
+    "state": "TX",
+    "lat": 32.896801,
+    "lon": -97.038002,
+    "elevationFt": 607,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 7,
+    "runwayCountTotal": 7,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 35778573,
+      "cy2024": 42351316,
+      "cagr5yr": 0.0343,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 70000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 60.5,
+    "routeMix": {
+      "longHaulSharePct": 10,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. DFW serves around 260 nonstop destinations, the largest domestic network of any US airport as American Airlines' primary hub; roughly 25 clear 2,000 miles across Europe (~12), South America (~8), Asia (~4), and the Middle East.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 23.7,
+      "year": 2024,
+      "metric": "% of scheduled flights delayed >15min",
+      "methodology": "A specific figure surfaced during research: a DOT Office of Inspector General report (Oct 2024) cites a 23.7% delay rate at DFW, above the CY2024 national baseline (20.3%). A separate press aggregation reported DFW arrival/departure delay rates around 28-29% for a different (non-annual) measurement window; the more conservative, explicitly-sourced OIG figure is used here.",
+      "source": "DOT Office of Inspector General, 'Flight Delays and Cancellations' report (AV2025003, Oct 23 2024): https://www.oig.dot.gov/sites/default/files/library-items/DOT%20Flight%20Delays%20and%20Cancellations%20Final%20Report_10.23.2024.pdf",
+      "confidence": "sourced"
+    },
+    "notes": [
+      "Included as a major anchor airport for comparison pool breadth.",
+      "Strongest CAGR (+3.4%) of any airport in the full tier, reflecting DFW's ongoing terminal/gate expansion and American Airlines' post-pandemic hub growth -- a useful high-growth contrast to ATL/LAX/ORD's flat-to-declining CAGR in this dataset."
+    ]
+  },
+  {
+    "iata": "DEN",
+    "icao": "KDEN",
+    "name": "Denver International Airport",
+    "city": "Denver",
+    "state": "CO",
+    "lat": 39.860027,
+    "lon": -104.673792,
+    "elevationFt": 5431,
+    "tier": "full",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 6,
+    "runwayCountTotal": 6,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), snapshot 2026-08-31",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 33592945,
+      "cy2024": 40012895,
+      "cagr5yr": 0.0356,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology.",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 60000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. See ANC record for full derivation. Note DEN's runways are unusually long (up to 16,000 ft, the longest commercial runway in North America) and widely spaced by design specifically to maximize independent simultaneous operations -- another case where this uniform heuristic likely understates true achievable capacity.",
+      "source": "Derived heuristic; see methodology field.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 66.7,
+    "routeMix": {
+      "longHaulSharePct": 6,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (destination-count proxy).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Same destination-count proxy methodology as ANC. DEN serves around 215 nonstop destinations, predominantly domestic as United's largest hub by destination count; roughly 12 clear 2,000 miles, mostly transatlantic Europe with a growing but still modest international network.",
+      "source": "Airline destination lists (Wikipedia/FlightConnections, accessed Aug 2026); distance classification by author",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 18,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "No single clean DEN-specific annual BTS figure surfaced during research. Estimate is set modestly below the CY2024 national baseline (20.3%), reflecting DEN's very long, widely-spaced runway layout designed for high independent throughput, offset somewhat by periodic severe winter-weather ground stops.",
+      "source": "BTS Air Travel Consumer Report national CY2024 baseline; qualitative characterization of DEN's runway layout. Not a directly reported BTS percentage.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Included as a major anchor airport for comparison pool breadth.",
+      "Strong CAGR (+3.6%), the highest in the full tier alongside DFW, reflecting Denver's sustained post-pandemic passenger growth and United's hub expansion."
+    ]
+  },
+  {
+    "iata": "MIA",
+    "icao": "KMIA",
+    "name": "Miami International Airport",
+    "city": "Miami",
+    "state": "FL",
+    "lat": 25.796011,
+    "lon": -80.289751,
+    "elevationFt": 8,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 21421031,
+      "cy2024": 26588002,
+      "cagr5yr": 0.0442,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 66.5,
+    "routeMix": {
+      "longHaulSharePct": 18,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Major Latin America gateway; most Caribbean/Central America routes fall under 2,000mi, but ~25-30 of ~150 destinations (South America, Europe) clear it.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 22,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Major Latin America gateway; most Caribbean/Central America routes fall under 2,000mi, but ~25-30 of ~150 destinations (South America, Europe) clear it.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "SEA",
+    "icao": "KSEA",
+    "name": "Seattle–Tacoma International Airport",
+    "city": "Seattle",
+    "state": "WA",
+    "lat": 47.447943,
+    "lon": -122.310276,
+    "elevationFt": 433,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 25001762,
+      "cy2024": 25414592,
+      "cagr5yr": 0.0033,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 84.7,
+    "routeMix": {
+      "longHaulSharePct": 12,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Growing transpacific/transatlantic hub (Alaska/Delta) with ~10-12 long-haul destinations of ~90.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 19,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Growing transpacific/transatlantic hub (Alaska/Delta) with ~10-12 long-haul destinations of ~90.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "LAS",
+    "icao": "KLAS",
+    "name": "Harry Reid International Airport",
+    "city": "Las Vegas",
+    "state": "NV",
+    "lat": 36.083361,
+    "lon": -115.151817,
+    "elevationFt": 2181,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 24728361,
+      "cy2024": 28244966,
+      "cagr5yr": 0.0269,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 70.6,
+    "routeMix": {
+      "longHaulSharePct": 4,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Overwhelmingly domestic leisure hub; a handful of UK/long Mexico routes clear 2,000mi.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 18,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Overwhelmingly domestic leisure hub; a handful of UK/long Mexico routes clear 2,000mi.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "PHX",
+    "icao": "KPHX",
+    "name": "Phoenix Sky Harbor International Airport",
+    "city": "Phoenix",
+    "state": "AZ",
+    "lat": 33.435302,
+    "lon": -112.005905,
+    "elevationFt": 1135,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 22433552,
+      "cy2024": 25595723,
+      "cagr5yr": 0.0267,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 85.3,
+    "routeMix": {
+      "longHaulSharePct": 2,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Almost entirely domestic/short-international (Mexico, Canada) plus one London route.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 17,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Almost entirely domestic/short-international (Mexico, Canada) plus one London route.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "MCO",
+    "icao": "KMCO",
+    "name": "Orlando International Airport",
+    "city": "Orlando",
+    "state": "FL",
+    "lat": 28.429399490356445,
+    "lon": -81.30899810791016,
+    "elevationFt": 96,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 24562271,
+      "cy2024": 27859783,
+      "cagr5yr": 0.0255,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 69.6,
+    "routeMix": {
+      "longHaulSharePct": 4,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Huge domestic leisure hub; limited long-haul beyond a few Latin America/Europe charter routes.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 20,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Huge domestic leisure hub; limited long-haul beyond a few Latin America/Europe charter routes.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "EWR",
+    "icao": "KEWR",
+    "name": "Newark Liberty International Airport",
+    "city": "Newark",
+    "state": "NJ",
+    "lat": 40.6894,
+    "lon": -74.170545,
+    "elevationFt": 18,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 23160763,
+      "cy2024": 24544320,
+      "cagr5yr": 0.0117,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 81.8,
+    "routeMix": {
+      "longHaulSharePct": 16,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. United transatlantic hub with dense NYC-area airspace congestion (EWR/JFK/LGA share the same terminal airspace).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 26,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. United transatlantic hub with dense NYC-area airspace congestion (EWR/JFK/LGA share the same terminal airspace).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "CLT",
+    "icao": "KCLT",
+    "name": "Charlotte Douglas International Airport",
+    "city": "Charlotte",
+    "state": "NC",
+    "lat": 35.2140007019043,
+    "lon": -80.94309997558594,
+    "elevationFt": 748,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 24199688,
+      "cy2024": 28523822,
+      "cagr5yr": 0.0334,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 95.1,
+    "routeMix": {
+      "longHaulSharePct": 7,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. American Airlines domestic hub with a modest transatlantic network; frequent weather-driven ground delay programs.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 22,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. American Airlines domestic hub with a modest transatlantic network; frequent weather-driven ground delay programs.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "MSP",
+    "icao": "KMSP",
+    "name": "Minneapolis–Saint Paul International Airport / Wold–Chamberlain Field",
+    "city": "Minneapolis",
+    "state": "MN",
+    "lat": 44.880081,
+    "lon": -93.221741,
+    "elevationFt": 841,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 19192917,
+      "cy2024": 18054481,
+      "cagr5yr": -0.0122,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 45.1,
+    "routeMix": {
+      "longHaulSharePct": 7,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Delta domestic hub with a modest long-haul network (Amsterdam, Paris, London, Tokyo, Seoul).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 18,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Delta domestic hub with a modest long-haul network (Amsterdam, Paris, London, Tokyo, Seoul).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "DTW",
+    "icao": "KDTW",
+    "name": "Detroit Metropolitan Wayne County Airport",
+    "city": "Detroit",
+    "state": "MI",
+    "lat": 42.21377,
+    "lon": -83.353786,
+    "elevationFt": 645,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 6,
+    "runwayCountTotal": 6,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 18143040,
+      "cy2024": 16110696,
+      "cagr5yr": -0.0235,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 60000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 26.9,
+    "routeMix": {
+      "longHaulSharePct": 8,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Delta domestic hub, similar profile to MSP.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 17,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Delta domestic hub, similar profile to MSP.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "PHL",
+    "icao": "KPHL",
+    "name": "Philadelphia International Airport",
+    "city": "Philadelphia",
+    "state": "PA",
+    "lat": 39.871899,
+    "lon": -75.241096,
+    "elevationFt": 36,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 16006389,
+      "cy2024": 15102261,
+      "cagr5yr": -0.0116,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 37.8,
+    "routeMix": {
+      "longHaulSharePct": 12,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. American Airlines transatlantic hub with a sizeable European network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 21,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. American Airlines transatlantic hub with a sizeable European network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "LGA",
+    "icao": "KLGA",
+    "name": "LaGuardia Airport",
+    "city": "New York",
+    "state": "NY",
+    "lat": 40.777199,
+    "lon": -73.872597,
+    "elevationFt": 21,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 15393601,
+      "cy2024": 16715567,
+      "cagr5yr": 0.0166,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 83.6,
+    "routeMix": {
+      "longHaulSharePct": 0,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Subject to the LaGuardia perimeter rule (nonstop flights generally limited to <=1,500mi with narrow exceptions); dense NYC-area airspace drives high delay rates.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 25,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Subject to the LaGuardia perimeter rule (nonstop flights generally limited to <=1,500mi with narrow exceptions); dense NYC-area airspace drives high delay rates.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "BWI",
+    "icao": "KBWI",
+    "name": "Baltimore/Washington International Thurgood Marshall Airport",
+    "city": "Baltimore",
+    "state": "MD",
+    "lat": 39.1754,
+    "lon": -76.668297,
+    "elevationFt": 146,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 13284687,
+      "cy2024": 13221461,
+      "cagr5yr": -0.001,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 44.1,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Mostly Southwest domestic low-cost network; minor seasonal international (Iceland, Caribbean).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 18,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Mostly Southwest domestic low-cost network; minor seasonal international (Iceland, Caribbean).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "SAN",
+    "icao": "KSAN",
+    "name": "San Diego International Airport",
+    "city": "San Diego",
+    "state": "CA",
+    "lat": 32.733601,
+    "lon": -117.190002,
+    "elevationFt": 17,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 1,
+    "runwayCountTotal": 1,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 12648692,
+      "cy2024": 12780013,
+      "cagr5yr": 0.0021,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 10000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 127.8,
+    "routeMix": {
+      "longHaulSharePct": 2,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Mostly domestic; one long-haul international route (Tokyo, Japan Airlines) plus Mexico/Canada.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 15,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Mostly domestic; one long-haul international route (Tokyo, Japan Airlines) plus Mexico/Canada.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "TPA",
+    "icao": "KTPA",
+    "name": "Tampa International Airport",
+    "city": "Tampa",
+    "state": "FL",
+    "lat": 27.9755,
+    "lon": -82.533203,
+    "elevationFt": 26,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 10978756,
+      "cy2024": 12075591,
+      "cagr5yr": 0.0192,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 40.3,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Mostly domestic leisure network; limited seasonal UK/Caribbean international.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 16,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Mostly domestic leisure network; limited seasonal UK/Caribbean international.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "IAH",
+    "icao": "KIAH",
+    "name": "George Bush Intercontinental Airport",
+    "city": "Houston",
+    "state": "TX",
+    "lat": 29.9844,
+    "lon": -95.3414,
+    "elevationFt": 97,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 5,
+    "runwayCountTotal": 5,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 21905309,
+      "cy2024": 23349157,
+      "cagr5yr": 0.0128,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 50000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 46.7,
+    "routeMix": {
+      "longHaulSharePct": 11,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. United's Latin America gateway with a growing Asia/Europe long-haul network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 19,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. United's Latin America gateway with a growing Asia/Europe long-haul network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "HNL",
+    "icao": "PHNL",
+    "name": "Daniel K. Inouye International Airport",
+    "city": "Honolulu, Oahu",
+    "state": "HI",
+    "lat": 21.318387,
+    "lon": -157.92567,
+    "elevationFt": 13,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 6,
+    "runwayCountTotal": 6,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 9988678,
+      "cy2024": 10449022,
+      "cagr5yr": 0.0091,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 60000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 17.4,
+    "routeMix": {
+      "longHaulSharePct": 65,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Hawaii's primary gateway: nearly all mainland-US and international scheduled destinations exceed 2,000mi by definition; only short interisland hops fall under the cutoff.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 13,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Hawaii's primary gateway: nearly all mainland-US and international scheduled destinations exceed 2,000mi by definition; only short interisland hops fall under the cutoff.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "IAD",
+    "icao": "KIAD",
+    "name": "Washington Dulles International Airport",
+    "city": "Dulles",
+    "state": "VA",
+    "lat": 38.9445,
+    "lon": -77.455803,
+    "elevationFt": 312,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 11884117,
+      "cy2024": 13003234,
+      "cagr5yr": 0.0182,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 32.5,
+    "routeMix": {
+      "longHaulSharePct": 21,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. United's Washington DC international gateway with a substantial European/African/Middle East/Asian long-haul network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 19,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. United's Washington DC international gateway with a substantial European/African/Middle East/Asian long-haul network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "DCA",
+    "icao": "KDCA",
+    "name": "Ronald Reagan Washington National Airport",
+    "city": "Washington",
+    "state": "DC",
+    "lat": 38.8521,
+    "lon": -77.037697,
+    "elevationFt": 15,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 11595454,
+      "cy2024": 12750892,
+      "cagr5yr": 0.0192,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 42.5,
+    "routeMix": {
+      "longHaulSharePct": 2,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Subject to the DCA perimeter rule (nonstop flights generally limited to <=1,250mi, with a small number of federally exempted longer routes); slot-constrained.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 20,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Subject to the DCA perimeter rule (nonstop flights generally limited to <=1,250mi, with a small number of federally exempted longer routes); slot-constrained.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "SLC",
+    "icao": "KSLC",
+    "name": "Salt Lake City International Airport",
+    "city": "Salt Lake City",
+    "state": "UT",
+    "lat": 40.78886,
+    "lon": -111.979866,
+    "elevationFt": 4227,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 4,
+    "runwayCountTotal": 4,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 12840841,
+      "cy2024": 13543570,
+      "cagr5yr": 0.0107,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 40000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 33.9,
+    "routeMix": {
+      "longHaulSharePct": 6,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Delta domestic hub with a modest long-haul network (Amsterdam, Paris, London) and generally favorable operating weather.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 15,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Delta domestic hub with a modest long-haul network (Amsterdam, Paris, London) and generally favorable operating weather.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "PDX",
+    "icao": "KPDX",
+    "name": "Portland International Airport",
+    "city": "Portland",
+    "state": "OR",
+    "lat": 45.588699,
+    "lon": -122.598,
+    "elevationFt": 31,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 3,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "M",
+      "label": "Medium hub"
+    },
+    "enplanements": {
+      "cy2019": 9797408,
+      "cy2024": 8639088,
+      "cagr5yr": -0.0249,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 30000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 28.8,
+    "routeMix": {
+      "longHaulSharePct": 6,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Growing but still modest international network (Tokyo, Amsterdam).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 15,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Growing but still modest international network (Tokyo, Amsterdam).",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "AUS",
+    "icao": "KAUS",
+    "name": "Austin Bergstrom International Airport",
+    "city": "Austin",
+    "state": "TX",
+    "lat": 30.197535,
+    "lon": -97.662015,
+    "elevationFt": 542,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 2,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "L",
+      "label": "Large hub"
+    },
+    "enplanements": {
+      "cy2019": 8507410,
+      "cy2024": 10678073,
+      "cagr5yr": 0.0465,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 53.4,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Mostly domestic with a small and recently-growing transatlantic network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 17,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Mostly domestic with a small and recently-growing transatlantic network.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  },
+  {
+    "iata": "MSY",
+    "icao": "KMSY",
+    "name": "Louis Armstrong New Orleans International Airport",
+    "city": "New Orleans",
+    "state": "LA",
+    "lat": 29.993401,
+    "lon": -90.264673,
+    "elevationFt": 4,
+    "tier": "screening",
+    "ourAirportsType": "large_airport",
+    "runwayCount": 2,
+    "runwayCountTotal": 3,
+    "runwayCountSource": "OurAirports airports.csv/runways.csv (public domain), fetched live at build time from https://davidmegginson.github.io/ourairports-data/",
+    "runwayCountConfidence": "sourced",
+    "faaHub": {
+      "code": "M",
+      "label": "Medium hub"
+    },
+    "enplanements": {
+      "cy2019": 6874111,
+      "cy2024": 6537092,
+      "cagr5yr": -0.01,
+      "methodology": "5-year CAGR = (CY2024 / CY2019)^(1/5) - 1, per ticket #3's COVID-safe methodology (skips the 2020-2022 pandemic collapse/recovery years by construction).",
+      "source": "FAA CY2019 and CY2024 Passenger Boarding (Enplanement) Data for U.S. Airports, fetched live at build time from faa.gov",
+      "confidence": "sourced"
+    },
+    "capacity": {
+      "annualPassengerCapacity": 20000000,
+      "perRunwayAnnualPassengers": 10000000,
+      "methodology": "runway-count-based heuristic: annualPassengerCapacity = openRunwayCount * 10,000,000. Same uniform constant and derivation as the full tier -- see data/full-tier.json's ANC record for the full FAA AC 150/5060-5-based derivation chain.",
+      "source": "Derived heuristic (see methodology field); not a published per-airport figure.",
+      "confidence": "estimated"
+    },
+    "capacityUtilizationPct": 32.7,
+    "routeMix": {
+      "longHaulSharePct": 3,
+      "definition": "Share of unique nonstop scheduled passenger destinations at >=2000 statute miles great-circle distance from the airport (a destination-count proxy for BTS T-100 passenger-weighted long-haul mix).",
+      "distanceGroupCutoffMiles": 2000,
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS T-100 segment microdata is not fetchable by this script (TranStats requires an interactive form submission with no documented direct-download URL; see module doc comment). Value is a hardcoded estimate from published route maps. Mostly domestic leisure/business network with limited seasonal UK/Mexico international service.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES), built from published route maps (FlightConnections/Wikipedia, accessed Aug 2026).",
+      "confidence": "estimated"
+    },
+    "delay": {
+      "pctFlightsDelayed15": 16,
+      "year": 2024,
+      "metric": "approx. % of scheduled flights delayed >15min",
+      "methodology": "Pragmatic 1-day-scope simplification, lower confidence than the full tier's already-estimated figures: BTS On-Time Performance microdata requires an authenticated Socrata API call (datahub.transportation.gov returns \"You must be logged in\") and the bts.gov/transportation.gov summary report downloads return HTTP 403 to automated fetches; see module doc comment. Value is anchored to the real CY2024 national baseline (20.3% of flights delayed) and adjusted per airport. Mostly domestic leisure/business network with limited seasonal UK/Mexico international service.",
+      "source": "Hardcoded lookup table in scripts/build-screening-tier.ts (LONG_HAUL_AND_DELAY_ESTIMATES); national baseline from BTS Air Travel Consumer Report CY2024.",
+      "confidence": "estimated"
+    },
+    "notes": [
+      "Screening tier: pulled programmatically by scripts/build-screening-tier.ts, not hand-curated. Runway/coordinate data and enplanements/CAGR are freshly fetched from OurAirports and FAA at build time (confidence: sourced); long-haul share and delay rate are a lower-confidence hardcoded estimate (confidence: estimated) -- see the methodology fields above."
+    ]
+  }
+]
