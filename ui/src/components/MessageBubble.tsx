@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { ChatMessage } from "../types";
 import { CopyButton } from "./CopyButton";
 import { ToolCallChip } from "./ToolCallChip";
@@ -49,7 +50,7 @@ export function MessageBubble({
       <div className="w-full space-y-2">
         <div className="group max-w-[85%]">
           <div className="markdown-content rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-sm">
-            <Markdown>{revealed}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{revealed}</Markdown>
           </div>
           {isDone ? (
             <div className="mt-0.5 flex justify-start opacity-0 transition group-hover:opacity-100">
