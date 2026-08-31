@@ -6,6 +6,7 @@ import { MessageBubble } from "./components/MessageBubble";
 import { ThinkingIndicator } from "./components/ThinkingIndicator";
 import { clearPersistedChat, loadPersistedChat, savePersistedChat } from "./lib/persistedChat";
 import type { ChatMessage } from "./types";
+import wonderfulLogo from "./assets/wonderful-logo.jpg";
 
 export default function App() {
   const initial = loadPersistedChat();
@@ -54,9 +55,7 @@ export default function App() {
     <div className="flex min-h-screen items-center justify-center p-0 sm:p-6">
       <div className="flex h-screen w-full max-w-3xl flex-col overflow-hidden bg-white/90 shadow-2xl shadow-sky-900/10 ring-1 ring-black/5 backdrop-blur sm:h-[calc(100vh-3rem)] sm:rounded-3xl">
         <header className="flex items-center gap-3 border-b border-sky-900/5 bg-gradient-to-r from-brand-50 to-white px-5 py-4">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-base shadow-sm">
-            ✈️
-          </span>
+          <img src={wonderfulLogo} alt="Wonderful" className="h-9 w-9 rounded-xl object-cover shadow-sm" />
           <div className="flex-1">
             <h1 className="text-base font-semibold text-slate-900">Airport Investment Intelligence Agent</h1>
             <p className="text-xs text-slate-500">Deterministic airport KPIs, narrated by an LLM analyst</p>
