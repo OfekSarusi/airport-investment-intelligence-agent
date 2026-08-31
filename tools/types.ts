@@ -1,10 +1,4 @@
-/**
- * Shape of a record in data/airports.json, as built by ticket #6.
- *
- * Kept intentionally close to the actual JSON structure (verified by reading
- * data/airports.json directly) rather than a hand-imagined schema, so the
- * scoring engine never silently reads undefined fields.
- */
+/** Shape of a record in data/airports.json. */
 
 export type Confidence = "sourced" | "estimated";
 
@@ -16,7 +10,7 @@ export interface HubClassification {
 export interface EnplanementData {
   cy2019: number;
   cy2024: number;
-  /** 5-year CAGR = (cy2024/cy2019)^(1/5) - 1, per ticket #3's COVID-safe methodology. */
+  /** 5-year CAGR = (cy2024/cy2019)^(1/5) - 1, skips 2020-2023 (COVID) by construction. */
   cagr5yr: number;
   methodology: string;
   source: string;
@@ -67,21 +61,14 @@ export interface AirportRecord {
   faaHub: HubClassification;
   enplanements: EnplanementData;
   capacity: CapacityData;
-  /** Precomputed by the data pipeline for human review; the scoring engine
-   *  recomputes this independently from enplanements/capacity rather than
-   *  trusting this field, so the formula has exactly one source of truth. */
+  /** For human review only -- tools/scoring.ts recomputes this itself. */
   capacityUtilizationPct: number;
   routeMix: RouteMixData;
   delay: DelayData;
   notes: string[];
 }
 
-/**
- * The dataset has no pre-baked "region" field (only `state`) -- ticket #2's
- * "region tags" is implemented here as a lookup instead of a data column,
- * since it's simpler to keep one region taxonomy in code than to keep a
- * denormalized field in sync across two tiers of hand/script-built data.
- */
+/** No "region" field in the data (only `state`) -- regions are a code-side lookup. */
 export const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "RI", "CT"] as const;
 
 export function regionOf(airport: Pick<AirportRecord, "state">): string {

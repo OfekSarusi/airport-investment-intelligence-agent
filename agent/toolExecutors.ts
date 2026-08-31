@@ -1,10 +1,4 @@
-/**
- * Executes the 5 Gemini tools by calling directly into tools/scoring.ts and
- * data/airports.json. This is the hallucination boundary in practice: every
- * number returned here is computed by pure functions, never by the model --
- * Gemini only ever narrates what these functions hand back (see ticket #3's
- * resolution and tools/scoring.ts's unmetDemandAnalysis narrativeFacts).
- */
+/** Executes the 5 tools by calling into tools/scoring.ts -- Gemini never computes a number itself. */
 
 import airportsData from "../data/airports.json";
 import {

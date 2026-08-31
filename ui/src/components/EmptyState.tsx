@@ -5,13 +5,7 @@ const SUGGESTIONS = [
   "What percentage of flights out of ANC are long-haul?",
 ];
 
-/**
- * Shown in place of a pre-filled assistant "greeting" bubble -- the user
- * starts the conversation, not the app (per explicit user feedback: the
- * app shouldn't put words in the assistant's mouth before anyone's asked
- * anything). Suggestion chips are optional starting points, not required
- * reading -- clicking one just sends it like typing it would.
- */
+/** Empty-state placeholder -- the user starts the conversation, not the app. */
 export function EmptyState({ onSuggestion }: { onSuggestion: (text: string) => void }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-5 px-6 text-center">

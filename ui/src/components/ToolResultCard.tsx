@@ -14,18 +14,7 @@ import { LongHaulCard } from "./LongHaulCard";
 import { ScreenCandidatesTable } from "./ScreenCandidatesTable";
 import { UnmetDemandCard } from "./UnmetDemandCard";
 
-/**
- * Maps one tool call's `result` payload to the KPI/breakdown card that
- * visualizes it (ticket #9's core requirement: computed numbers shown
- * visually, not left buried in the chat text).
- *
- *   get_airport_details            -> AirportDetailsCard (full KPI set)
- *   compare_airports               -> CompareAirportsCard (one card per airport, side by side)
- *   screen_investment_candidates   -> ScreenCandidatesTable (ranked table)
- *   calculate_long_haul_stats      -> LongHaulCard
- *   get_unmet_demand_analysis      -> UnmetDemandCard
- *   any isError result             -> ErrorCard
- */
+/** Maps a tool call's result to the KPI card that visualizes it. */
 export function ToolResultCard({ call }: { call: ToolCall }) {
   if (call.isError) {
     return <ErrorCard error={call.result as ToolErrorResult} />;

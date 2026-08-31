@@ -1,9 +1,4 @@
-/**
- * A 0-100 score rendered as a labeled horizontal bar, with an optional
- * component breakdown underneath (e.g. utilization/congestion/growth). Used
- * for both Investment Opportunity Score and Congestion Index -- the two
- * headline 0-100 KPIs the assignment asks to visualize, not just narrate.
- */
+/** A 0-100 score as a labeled horizontal bar. */
 
 function barColor(score: number): string {
   if (score >= 70) return "bg-rose-500";

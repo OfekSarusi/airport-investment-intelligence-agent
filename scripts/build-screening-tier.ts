@@ -1,50 +1,13 @@
 /**
- * Build the "screening" tier of data/airports.json.
+ * Builds the "screening" tier of data/airports.json: pulls OurAirports
+ * (runways/coordinates) and FAA CY2019/CY2024 enplanements live, real HTTP
+ * GET, no auth. Long-haul % and delay rate use a hardcoded estimate instead
+ * (LONG_HAUL_AND_DELAY_ESTIMATES below) -- BTS T-100/OTP have no scriptable
+ * download without a login (see research/aviation-data-sources.md) -- marked
+ * `confidence: "estimated"` like their full-tier equivalents.
  *
- * Ticket #6 ("Build the static airport dataset") asks for ~20-25 additional
- * airports pulled *programmatically* (not hand-typed) so `screen_investment_candidates`
- * (a future Gemini tool, ticket #8) has a non-trivial ranking pool beyond the
- * ~15 hand-curated "full" tier airports in data/full-tier.json.
- *
- * What this script actually fetches live, for real, every run:
- *   - OurAirports airports.csv + runways.csv (public domain, no auth, plain HTTP GET)
- *     -> ICAO ident, coordinates, elevation, municipality/region, runway count.
- *   - FAA CY2019 and CY2024 "Passenger Boarding (Enplanement)" .xlsx files
- *     (also plain HTTP GET, no auth) -> real CY2019/CY2024 enplanements + FAA
- *     hub classification (L/M/S/N), from which a real 5-year CAGR is computed
- *     using the exact same COVID-safe methodology as the full tier (ticket #3).
- *
- * What this script does NOT fetch live, and why (documented per ticket #6's
- * explicit allowance for this pragmatic 1-day-scope simplification):
- *   - BTS T-100 segment data (route/distance-group mix, used elsewhere for
- *     long-haul %) has no documented direct-download URL. Its web UI
- *     (transtats.bts.gov/DL_SelectFields.asp) requires an interactive
- *     multi-field form submission with no scriptable GET equivalent.
- *   - BTS On-Time Performance / Air Travel Consumer Report data is exposed
- *     via a Socrata API at datahub.transportation.gov, but every relevant
- *     resource (e.g. r52d-vs5d, ewwa-r892) returns
- *     `{"error":true,"message":"You must be logged in to access this resource"}`
- *     for unauthenticated requests -- verified during this ticket's research.
- *     The bts.gov/transportation.gov hosted summary PDF/XLSX rankings also
- *     return HTTP 403 to automated fetches from this environment.
- *   -> For these two fields only, this script uses a small hardcoded lookup
- *      table (LONG_HAUL_AND_DELAY_ESTIMATES below), built the same way the
- *      full-tier's "estimated" fields were: a destination-count-based
- *      long-haul proxy (>=2000mi nonstop destinations / total nonstop
- *      destinations, from published route maps) and a delay-rate estimate
- *      anchored to the real CY2024 national BTS baseline (20.3% of flights
- *      delayed >15min) and adjusted per airport for well-documented,
- *      citable congestion/network characteristics (hub role, airspace
- *      complexity, runway layout). Every such value is marked
- *      `confidence: "estimated"`, exactly like the equivalent full-tier
- *      fields, so downstream consumers can distinguish it from the
- *      `confidence: "sourced"` OurAirports/FAA-derived fields.
- *
- * Output: merges data/full-tier.json (hand-curated, tier "full") with the
- * freshly-computed screening-tier records (tier "screening") and writes the
- * combined array to data/airports.json. That committed JSON -- not this
- * script -- is what the rest of the app (scoring engine, Gemini tools) reads
- * at request time; this script is re-run only to refresh the dataset.
+ * Merges with data/full-tier.json and writes data/airports.json, which is
+ * what the app actually reads; this script only needs to run to refresh it.
  */
 
 import * as fs from "fs";

@@ -11,10 +11,7 @@ export function InvestmentCongestionBlock({
   compact?: boolean;
 }) {
   return (
-    // Viewport-based sm:grid-cols-2 doesn't know how narrow THIS card is when
-    // several are shown side by side (compare_airports) -- it triggered on
-    // a wide screen even when each card only had ~320px, cutting off the
-    // Congestion Index column. `compact` forces a single column instead.
+    // `compact` forces one column -- sm:grid-cols-2 reacts to viewport width, not this card's actual width.
     <div className={`grid grid-cols-1 gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
       <div className="space-y-2">
         <ScoreGauge label="Investment Opportunity Score" score={investmentScore.score} />

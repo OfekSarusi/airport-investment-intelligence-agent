@@ -1,12 +1,6 @@
 import type { Confidence } from "../types";
 
-/**
- * Small, always-visible confidence indicator -- deliberately not a tooltip
- * (see ticket #9's spec: "don't hide this in a tooltip nobody will find").
- * "sourced" reads as a quiet, affirmative dot; "estimated" is a distinct
- * amber pill so it draws the eye exactly where a number is a heuristic
- * rather than an official statistic.
- */
+/** Always-visible confidence indicator -- never hidden behind a tooltip. */
 export function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
   if (confidence === "sourced") {
     return (

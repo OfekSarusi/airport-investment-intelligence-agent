@@ -1,26 +1,12 @@
-/**
- * Gemini agent orchestration loop, built on the @google/genai Interactions
- * API (v2.19.0). Every field/shape used here was verified directly against
- * node_modules/@google/genai/dist/genai.d.ts and cross-checked against
- * ai.google.dev/gemini-api/docs/function-calling -- not recalled from
- * training memory, since this SDK surface (interactions.create,
- * previous_interaction_id server-side history) postdates this assistant's
- * knowledge cutoff.
- */
+/** Orchestration loop, built on the @google/genai Interactions API (v2.19.0). */
 
 import { GoogleGenAI } from "@google/genai";
 import { toolDeclarations } from "./tools";
 import { executeTool } from "./toolExecutors";
 import { getOrCreateSession, ToolCallRecord } from "./sessionStore";
 
-/**
- * gemini-3.7-flash (the newest/most capable flash tier) turned out to have a
- * very tight free-tier quota in practice -- observed empirically as a 429
- * with "limit: 5" during ticket #8's own smoke test, not just a doc claim.
- * gemini-3.5-flash-lite trades a bit of reasoning depth for a much more
- * generous free-tier allowance, which matters more for a live demo than
- * marginal answer quality on these fairly structured, well-scoped tools.
- */
+// gemini-3.7-flash hit a 429 (free-tier limit: 5) after one call in testing;
+// -lite has a far safer quota margin for a live demo.
 const MODEL = "gemini-3.5-flash-lite";
 const MAX_TOOL_ROUNDS = 6; // guards against a runaway function-calling loop
 
@@ -50,12 +36,7 @@ export interface RunTurnResult {
   toolCalls: ToolCallRecord[];
 }
 
-/**
- * Runs one user turn to completion: sends the message, executes any function
- * calls the model makes (looping until it stops calling tools), and returns
- * the final text reply plus a flat list of every tool call made along the
- * way (for the chat UI's tool-call badges, ticket #9).
- */
+/** Sends a message, runs any tool calls the model makes, returns the final reply. */
 export async function runTurn(sessionId: string, userMessage: string): Promise<RunTurnResult> {
   const client = requireClient();
   const session = getOrCreateSession(sessionId);

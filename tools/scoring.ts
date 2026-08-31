@@ -1,80 +1,23 @@
 /**
- * Deterministic scoring engine for the Airport Investment Intelligence Agent.
- *
- * Every function here is a pure function over an AirportRecord (or a list of
- * them): no I/O, no LLM calls, no randomness. This module is what ticket #8's
- * Gemini tools call into -- the model is only ever handed the *results* of
- * these functions to narrate, never asked to compute a number itself.
- *
- * Formulas and weights implement the decisions recorded in ticket #3
- * ("Design deterministic scoring formulas"):
- *   - Congestion Index  = f(capacity utilization, delay severity)
- *   - Investment Score  = f(capacity utilization, Congestion Index, growth)
- *   - Unmet demand      = projected next-year demand vs. estimated capacity
- *
- * All weights/anchors below are explicit constants so they're easy to find,
- * cite in DESIGN.md, and tune later -- nothing is a magic number inline.
+ * Deterministic scoring engine. Pure functions only -- no I/O, no LLM calls.
+ * The agent hands these results to Gemini to narrate; it never computes a
+ * number itself. Full rationale for the formulas: DESIGN.md.
  */
 
 import { AirportRecord, Confidence, regionOf } from "./types";
 
-// ---------------------------------------------------------------------------
-// Tunable constants (documented here; cite these in DESIGN.md verbatim)
-// ---------------------------------------------------------------------------
+export const CONGESTION_WEIGHTS = { utilization: 0.6, delay: 0.4 } as const;
+export const INVESTMENT_WEIGHTS = { utilization: 0.35, congestion: 0.35, growth: 0.3 } as const;
 
-/** Congestion Index = utilization component * W + delay component * (1-W). */
-export const CONGESTION_WEIGHTS = {
-  utilization: 0.6,
-  delay: 0.4,
-} as const;
-
-/** Investment Opportunity Score weights across its three inputs (sum to 1). */
-export const INVESTMENT_WEIGHTS = {
-  utilization: 0.35,
-  congestion: 0.35,
-  growth: 0.3,
-} as const;
-
-/**
- * Utilization % at or above which the *utilization score component* saturates
- * at 100. Raw utilization can exceed 100% (e.g. ATL) -- that raw number is
- * preserved and surfaced as-is; only the normalized 0-100 score is capped, so
- * an airport at 105% and one at 140% don't further distort the blended score.
- */
 const UTILIZATION_SCORE_CAP_PCT = 100;
-
-/**
- * % of flights delayed >15min at which the delay score component saturates
- * at 100. CY2024 national baseline is ~20.3% (BTS); SFO's ~29.5% is the
- * highest sourced figure in this dataset. 40% gives headroom above the worst
- * observed value rather than clipping real data at the top of its own range.
- */
-const DELAY_SCORE_SATURATION_PCT = 40;
-
-/**
- * 5-year CAGR range mapped onto the 0-100 growth score: -5%/yr -> 0,
- * 0%/yr -> 50, +5%/yr -> 100. Chosen because the dataset's observed CAGR
- * range (~-6% to +4%/yr) fits comfortably inside it without every airport
- * bunching at one end.
- */
+const DELAY_SCORE_SATURATION_PCT = 40; // above the worst sourced figure (SFO ~29.5%), so real data isn't clipped
 const GROWTH_SCORE_MIN_CAGR = -0.05;
 const GROWTH_SCORE_MAX_CAGR = 0.05;
 
-/** CY2024 national on-time-performance baseline (BTS Air Travel Consumer Report). */
-export const NATIONAL_BASELINE_DELAY_PCT = 20.3;
+export const NATIONAL_BASELINE_DELAY_PCT = 20.3; // BTS CY2024 Air Travel Consumer Report
 
-/**
- * "Operational strain" thresholds for unmetDemandAnalysis(): utilization at
- * or above this AND delay meaningfully above the national baseline is
- * treated as unmet demand even when raw passenger volume hasn't crossed the
- * capacity ceiling. Rationale: elevated delay at moderate-to-high utilization
- * is itself evidence that *effective* capacity (weather/operational limits,
- * e.g. SFO's fog-restricted parallel runways) is tighter than the
- * passenger-volume heuristic alone suggests -- a naive volume-vs-ceiling
- * check misses this entirely (verified against SFO during ticket #7's
- * smoke test: -2%/yr CAGR meant a volume-only check said "not constrained",
- * which contradicts SFO's well-documented chronic delay problem).
- */
+// See DESIGN.md: flags unmet demand even without crossing the volume ceiling
+// (found via SFO, whose flat growth otherwise hid its real congestion).
 const OPERATIONAL_STRAIN_UTILIZATION_THRESHOLD_PCT = 50;
 const OPERATIONAL_STRAIN_DELAY_MARGIN_PCT = 5;
 
@@ -86,23 +29,12 @@ function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
 
-// ---------------------------------------------------------------------------
-// Capacity utilization
-// ---------------------------------------------------------------------------
-
-/**
- * Passengers (CY2024 enplanements) / estimated annual passenger capacity, as
- * a percentage. Recomputed from raw fields rather than trusting
- * AirportRecord.capacityUtilizationPct (a value the data pipeline precomputed
- * for its own review), so this formula has exactly one implementation.
- */
 export function capacityUtilizationPct(airport: AirportRecord): number {
   return (airport.enplanements.cy2024 / airport.capacity.annualPassengerCapacity) * 100;
 }
 
 export function utilizationScore(airport: AirportRecord): number {
-  const pct = capacityUtilizationPct(airport);
-  return clamp((pct / UTILIZATION_SCORE_CAP_PCT) * 100);
+  return clamp((capacityUtilizationPct(airport) / UTILIZATION_SCORE_CAP_PCT) * 100);
 }
 
 export function delayScore(airport: AirportRecord): number {
@@ -115,26 +47,20 @@ export function growthScore(airport: AirportRecord): number {
   return clamp(((cagr5yr - GROWTH_SCORE_MIN_CAGR) / range) * 100);
 }
 
-// ---------------------------------------------------------------------------
-// Congestion Index -- also a standalone, user-facing KPI (test case 2)
-// ---------------------------------------------------------------------------
-
 export interface CongestionIndexResult {
-  /** 0-100 blended score. */
   score: number;
   utilizationComponent: number;
   delayComponent: number;
-  /** Raw, un-normalized inputs, for display/explanation. */
   utilizationPct: number;
   delayPct: number;
   weights: typeof CONGESTION_WEIGHTS;
 }
 
+/** Also a standalone KPI -- compare_airports returns this directly. */
 export function congestionIndex(airport: AirportRecord): CongestionIndexResult {
   const uScore = utilizationScore(airport);
   const dScore = delayScore(airport);
-  const score =
-    uScore * CONGESTION_WEIGHTS.utilization + dScore * CONGESTION_WEIGHTS.delay;
+  const score = uScore * CONGESTION_WEIGHTS.utilization + dScore * CONGESTION_WEIGHTS.delay;
 
   return {
     score: round1(score),
@@ -146,29 +72,17 @@ export function congestionIndex(airport: AirportRecord): CongestionIndexResult {
   };
 }
 
-// ---------------------------------------------------------------------------
-// Investment Opportunity Score
-// ---------------------------------------------------------------------------
-
 export interface InvestmentScoreResult {
-  /** 0-100 blended score. Higher = stronger renovation/expansion candidate. */
   score: number;
   utilizationComponent: number;
   congestionComponent: number;
   growthComponent: number;
   weights: typeof INVESTMENT_WEIGHTS;
-  /** Full breakdown of the congestion sub-score, since it's itself composite. */
   congestion: CongestionIndexResult;
 }
 
-/**
- * Note on the deliberate overlap: capacity utilization is weighted directly
- * (35%) AND indirectly through the Congestion Index (60% of that 35%, i.e.
- * another ~21%). This isn't double-counting by accident -- utilization is
- * the single clearest quantifiable signal of a capacity/demand mismatch
- * (the assignment's actual stated goal), so it's intentionally the dominant
- * input across both layers.
- */
+// Congestion already weighs utilization at 60%, so the effective weights are
+// 56/14/30, not the headline 35/35/30 -- intentional (see DESIGN.md).
 export function investmentOpportunityScore(airport: AirportRecord): InvestmentScoreResult {
   const uScore = utilizationScore(airport);
   const congestion = congestionIndex(airport);
@@ -189,10 +103,6 @@ export function investmentOpportunityScore(airport: AirportRecord): InvestmentSc
   };
 }
 
-// ---------------------------------------------------------------------------
-// Long-haul stats -- thin passthrough, kept here so every KPI has one home
-// ---------------------------------------------------------------------------
-
 export interface LongHaulStats {
   longHaulSharePct: number;
   distanceGroupCutoffMiles: number;
@@ -205,44 +115,20 @@ export function longHaulStats(airport: AirportRecord): LongHaulStats {
   return { longHaulSharePct, distanceGroupCutoffMiles, definition, confidence };
 }
 
-// ---------------------------------------------------------------------------
-// Unmet demand analysis (core of test case 4: "unmet demand at SFO and why")
-// ---------------------------------------------------------------------------
-
 export interface UnmetDemandResult {
   currentPax: number;
   capacity: number;
   utilizationPct: number;
   cagr5yr: number;
-  /** Naive 1-year-ahead projection at the current CAGR. */
   projectedNextYearPax: number;
-  /** max(0, projected - capacity) -- passengers demand would strand next year. */
   unmetPax: number;
-  /**
-   * true if EITHER: (a) already over capacity or projected to exceed it
-   * within a year (volume-based), OR (b) utilization is elevated and delay
-   * is meaningfully above the national baseline (operationally-strained --
-   * see OPERATIONAL_STRAIN_* constants). An airport can be constrained by
-   * (b) alone even with flat/declining passenger volume, e.g. SFO.
-   */
+  /** True via a raw volume projection OR operational strain -- see below. */
   isConstrained: boolean;
   isVolumeConstrained: boolean;
   isOperationallyStrained: boolean;
-  /**
-   * Surfaced as their own fields (not just prose inside narrativeFacts) so
-   * the UI (ticket #9) can render a structured confidence badge next to the
-   * capacity/delay figures, instead of confidence only being readable by
-   * parsing free text.
-   */
   capacityConfidence: Confidence;
   delayConfidence: Confidence;
-  /**
-   * Plain-fact strings (numbers + context only, no persuasion/spin) for the
-   * LLM to narrate. This is the hallucination boundary in practice: the tool
-   * layer (ticket #8) hands these facts to Gemini instead of raw numbers
-   * alone, so the model explains *these specific facts* rather than
-   * inventing its own framing.
-   */
+  /** Plain facts for the LLM to narrate -- it explains these, not its own numbers. */
   narrativeFacts: string[];
 }
 
@@ -316,25 +202,16 @@ export function unmetDemandAnalysis(airport: AirportRecord): UnmetDemandResult {
   };
 }
 
-// ---------------------------------------------------------------------------
-// Ranking / screening
-// ---------------------------------------------------------------------------
-
 export interface RankedAirport {
   airport: AirportRecord;
   investment: InvestmentScoreResult;
 }
 
 export interface ScreenOptions {
-  /** e.g. "New England". Matched via types.ts's regionOf() state lookup. */
   region?: string;
   minScore?: number;
 }
 
-/**
- * Ranks airports by Investment Opportunity Score, descending. Backs both
- * screen_investment_candidates (ticket #8) and the New England test case.
- */
 export function rankAirports(airports: AirportRecord[], opts: ScreenOptions = {}): RankedAirport[] {
   let pool = airports;
 

@@ -1,18 +1,4 @@
-/**
- * Gemini tool (function) declarations for the 5 assignment-required tools.
- *
- * Verified against the installed @google/genai SDK's type definitions
- * (node_modules/@google/genai/dist/genai.d.ts, v2.19.0) rather than guessed
- * from memory: the Interactions API's `tools` array takes `FunctionT`
- * objects shaped exactly like this (`type: "function"`, `name`,
- * `description`, `parameters` as a JSON Schema object) -- confirmed via
- * ai.google.dev/gemini-api/docs/function-calling and cross-checked directly
- * against the SDK's shipped .d.ts.
- *
- * These declarations carry no logic -- see toolExecutors.ts for what
- * actually runs. Keeping schema and implementation in separate files lets
- * either change without touching the other.
- */
+/** Tool (function) declaration schemas Gemini reads -- no logic here, see toolExecutors.ts. */
 
 export interface FunctionToolDeclaration {
   type: "function";

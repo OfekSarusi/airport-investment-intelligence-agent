@@ -8,9 +8,7 @@ import { clearPersistedChat, loadPersistedChat, savePersistedChat } from "./lib/
 import type { ChatMessage } from "./types";
 import wonderfulLogo from "./assets/wonderful-logo.jpg";
 
-/** Within this many px of the bottom still counts as "at the bottom" --
- *  avoids the scroll-to-bottom button flickering in on tiny sub-pixel
- *  scroll deltas. */
+/** Within this many px of the bottom still counts as "at the bottom". */
 const AT_BOTTOM_THRESHOLD_PX = 48;
 
 export default function App() {
@@ -19,9 +17,7 @@ export default function App() {
   const [sessionId, setSessionId] = useState<string | undefined>(initial.sessionId);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // The one message currently playing its typing animation -- never set for
-  // messages restored from localStorage, only for a reply that just arrived
-  // this session, so history doesn't "replay" on every page load.
+  // Only the reply that just arrived plays the typing animation -- never history restored from storage.
   const [streamingId, setStreamingId] = useState<string | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -41,10 +37,7 @@ export default function App() {
     setIsAtBottom(atBottom);
   }
 
-  // Follows new content (a fresh message, tool cards appearing, the
-  // thinking indicator) only while the user hasn't deliberately scrolled up
-  // to reread something earlier -- otherwise this would yank them back down
-  // mid-read every time a reply streams in.
+  // Only auto-follow new content if the user hasn't scrolled up to reread something.
   useEffect(() => {
     if (isAtBottomRef.current) {
       scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });

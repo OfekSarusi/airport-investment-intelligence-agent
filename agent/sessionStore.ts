@@ -1,15 +1,8 @@
 /**
- * In-memory conversational state, per ticket #1's decision.
- *
- * The Gemini Interactions API tracks conversation content server-side (you
- * chain turns via `previous_interaction_id` rather than resending a full
- * message history) -- so the only thing this store needs for the MODEL's
- * context is the last interaction id per session. It also keeps a light
- * transcript purely for the chat UI to render (ticket #9), which the
- * Interactions API has no reason to know about.
- *
- * No persistence, no DB, lost on server restart -- correct for a demo, not
- * for production (see the architecture discussion on ticket #8/map Notes).
+ * In-memory conversation state. Gemini tracks history server-side via
+ * previous_interaction_id, so this only needs the last interaction id per
+ * session, plus a light transcript for the UI. No persistence -- fine for a
+ * demo, not for production.
  */
 
 export interface ToolCallRecord {

@@ -1,13 +1,4 @@
-/**
- * Lightweight verification harness for the scoring engine -- NOT a formal
- * test suite (no framework installed; see ticket #7's resolution for why).
- * Runs the pure functions in scoring.ts directly against the real
- * data/airports.json and prints results for exactly the scenarios the 4
- * assignment test cases exercise, so formula sanity can be eyeballed before
- * wiring any of this into the Gemini agent (ticket #8).
- *
- * Run with: npm run score:smoke
- */
+/** Runs scoring.ts against real data for the 4 test cases. Run with: npm run score:smoke */
 
 import airportsData from "../data/airports.json";
 import {

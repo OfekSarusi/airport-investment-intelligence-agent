@@ -9,11 +9,8 @@ import { resetSession } from "../agent/sessionStore";
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-// Built React static assets (ticket #9), produced by `npm run build` inside
-// ui/ -- the Dockerfile's ui-build stage does this and copies the output
-// here. In local dev this directory won't exist (the UI runs via its own
-// Vite dev server instead, proxying /api to this server), so express.static
-// silently serves nothing rather than erroring -- that's fine, expected.
+// Built UI assets (produced by `npm run build` in ui/, copied here by Docker).
+// Doesn't exist in local dev -- the UI runs its own Vite server instead.
 const UI_DIST_DIR = path.join(__dirname, "../ui/dist");
 
 app.use(cors());
@@ -50,10 +47,7 @@ app.post("/api/session/:sessionId/reset", (req, res) => {
   res.json({ ok: true });
 });
 
-// SPA fallback: any non-API GET request gets index.html (there's no
-// client-side routing in this app today, but this keeps a hard refresh or a
-// deep link from 404ing). Express 5's wildcard syntax requires a named
-// param (`*splat`), not a bare `*`. Placed last, after every real route.
+// SPA fallback so a hard refresh doesn't 404 (Express 5 needs a named wildcard, not bare `*`).
 app.get("/*splat", (req, res, next) => {
   if (req.path.startsWith("/api/")) {
     next();
