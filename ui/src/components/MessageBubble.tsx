@@ -4,6 +4,7 @@ import type { ChatMessage } from "../types";
 import { CopyButton } from "./CopyButton";
 import { ToolCallChip } from "./ToolCallChip";
 import { ToolResultCard } from "./ToolResultCard";
+import { shouldRenderCard } from "../lib/dedupeToolCalls";
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
@@ -42,9 +43,9 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
 
         {toolCalls.length > 0 ? (
           <div className="space-y-3 pl-1">
-            {toolCalls.map((call, i) => (
-              <ToolResultCard key={i} call={call} />
-            ))}
+            {toolCalls.map((call, i) =>
+              shouldRenderCard(call, toolCalls, i) ? <ToolResultCard key={i} call={call} /> : null,
+            )}
           </div>
         ) : null}
       </div>
