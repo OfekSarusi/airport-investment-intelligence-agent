@@ -1,7 +1,6 @@
 import "dotenv/config";
 import path from "node:path";
 import express from "express";
-import cors from "cors";
 import { randomUUID } from "node:crypto";
 import { runTurn } from "../agent/geminiAgent";
 import { resetSession } from "../agent/sessionStore";
@@ -13,7 +12,10 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 // Doesn't exist in local dev -- the UI runs its own Vite server instead.
 const UI_DIST_DIR = path.join(__dirname, "../ui/dist");
 
-app.use(cors());
+// No CORS middleware: the UI and API always share one origin (same container
+// in Docker; Vite's dev proxy makes it same-origin from the browser's view
+// in local dev too), so there's no legitimate cross-origin caller -- default
+// same-origin browser behavior is the correct, safer posture here.
 app.use(express.json());
 app.use(express.static(UI_DIST_DIR));
 
@@ -35,10 +37,12 @@ app.post("/api/chat", async (req, res) => {
     const { reply, toolCalls } = await runTurn(sessionId, message);
     res.json({ sessionId, reply, toolCalls });
   } catch (err) {
-    const error = err as Error;
+    // Full error (may include upstream SDK/API internals) is logged
+    // server-side only -- the client gets a generic message so we never leak
+    // implementation details in an HTTP response.
     // eslint-disable-next-line no-console
-    console.error("[/api/chat] error:", error);
-    res.status(500).json({ error: error.message });
+    console.error("[/api/chat] error:", err);
+    res.status(500).json({ error: "Something went wrong processing your message. Please try again." });
   }
 });
 

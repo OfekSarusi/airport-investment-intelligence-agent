@@ -10,7 +10,6 @@
     "server:dev": "ts-node server/index.ts"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^22.10.0",
     "ts-node": "^10.9.2",
@@ -18,7 +17,6 @@
   },
   "dependencies": {
     "@google/genai": "^2.19.0",
-    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "exceljs": "^4.4.0",
     "express": "^5.2.1"
