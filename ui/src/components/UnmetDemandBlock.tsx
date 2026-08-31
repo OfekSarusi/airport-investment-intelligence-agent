@@ -24,7 +24,7 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
         <span className="text-sm font-medium text-slate-700">Unmet demand</span>
         <ConstrainedPill constrained={unmet.isConstrained} />
       </div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className={`grid grid-cols-2 gap-2 ${compact ? "" : "sm:grid-cols-4"}`}>
         <StatTile label="Utilization" value={formatPct(unmet.utilizationPct)} />
         <StatTile label="Current pax" value={formatInt(unmet.currentPax)} />
         <StatTile label="Projected next yr" value={formatInt(unmet.projectedNextYearPax)} />

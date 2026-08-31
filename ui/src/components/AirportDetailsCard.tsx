@@ -15,7 +15,7 @@ export function AirportDetailsCard({ airport, compact = false }: { airport: Airp
       subtitle={`${airport.city}, ${airport.state} - ${airport.region} - ${airport.tier} tier`}
     >
       <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className={`grid grid-cols-2 gap-2 ${compact ? "" : "sm:grid-cols-4"}`}>
           <StatTile label="CY2024 enplanements" value={formatInt(airport.enplanements.cy2024)} />
           <StatTile
             label={
@@ -36,7 +36,11 @@ export function AirportDetailsCard({ airport, compact = false }: { airport: Airp
           />
         </div>
 
-        <InvestmentCongestionBlock investmentScore={airport.investmentScore} congestionIndex={airport.congestionIndex} />
+        <InvestmentCongestionBlock
+          investmentScore={airport.investmentScore}
+          congestionIndex={airport.congestionIndex}
+          compact={compact}
+        />
 
         <LongHaulBlock longHaul={airport.longHaul} />
 
