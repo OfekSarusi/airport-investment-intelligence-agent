@@ -26,6 +26,63 @@ body {
   background: #f3f5f8;
 }
 
+/* Minimal markdown styling for assistant replies (react-markdown emits
+   plain semantic HTML with no classes -- Gemini's answers use headings,
+   bold, and lists, and left unstyled they rendered as literal '**'/'###'
+   characters, which looked broken). Scoped to .markdown-content rather
+   than pulling in @tailwindcss/typography for a handful of tags. */
+.markdown-content :first-child {
+  margin-top: 0;
+}
+.markdown-content :last-child {
+  margin-bottom: 0;
+}
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  font-weight: 600;
+  color: #1f2937;
+  margin-top: 0.75em;
+  margin-bottom: 0.25em;
+}
+.markdown-content h1 {
+  font-size: 1rem;
+}
+.markdown-content h2 {
+  font-size: 0.95rem;
+}
+.markdown-content h3 {
+  font-size: 0.9rem;
+}
+.markdown-content p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+.markdown-content ul,
+.markdown-content ol {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  padding-left: 1.25em;
+}
+.markdown-content ul {
+  list-style: disc;
+}
+.markdown-content ol {
+  list-style: decimal;
+}
+.markdown-content li {
+  margin-top: 0.15em;
+}
+.markdown-content strong {
+  font-weight: 600;
+  color: #111827;
+}
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.6em 0;
+}
+
 /* Slim, unobtrusive scrollbar for the message stream. */
 .scroll-thin::-webkit-scrollbar {
   width: 8px;

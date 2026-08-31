@@ -81,6 +81,8 @@ export interface UnmetDemandResult {
   isConstrained: boolean;
   isVolumeConstrained: boolean;
   isOperationallyStrained: boolean;
+  capacityConfidence: Confidence;
+  delayConfidence: Confidence;
   narrativeFacts: string[];
 }
 

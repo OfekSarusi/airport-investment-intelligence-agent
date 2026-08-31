@@ -1,6 +1,7 @@
 import type { UnmetDemandResult } from "../types";
 import { formatInt, formatPct } from "../lib/format";
 import { StatTile } from "./CardShell";
+import { ConfidenceBadge } from "./ConfidenceBadge";
 
 export function ConstrainedPill({ constrained }: { constrained: boolean }) {
   return (
@@ -39,6 +40,14 @@ export function UnmetDemandBlock({ unmet, compact = false }: { unmet: UnmetDeman
         </span>
         <span>
           Operationally strained: <strong className="text-slate-700">{unmet.isOperationallyStrained ? "yes" : "no"}</strong>
+        </span>
+      </div>
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
+        <span className="inline-flex items-center gap-1.5">
+          Capacity figure: <ConfidenceBadge confidence={unmet.capacityConfidence} />
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          Delay figure: <ConfidenceBadge confidence={unmet.delayConfidence} />
         </span>
       </div>
       {facts.length > 0 ? (

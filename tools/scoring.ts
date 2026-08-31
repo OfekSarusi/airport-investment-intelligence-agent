@@ -16,7 +16,7 @@
  * cite in DESIGN.md, and tune later -- nothing is a magic number inline.
  */
 
-import { AirportRecord, regionOf } from "./types";
+import { AirportRecord, Confidence, regionOf } from "./types";
 
 // ---------------------------------------------------------------------------
 // Tunable constants (documented here; cite these in DESIGN.md verbatim)
@@ -229,6 +229,14 @@ export interface UnmetDemandResult {
   isVolumeConstrained: boolean;
   isOperationallyStrained: boolean;
   /**
+   * Surfaced as their own fields (not just prose inside narrativeFacts) so
+   * the UI (ticket #9) can render a structured confidence badge next to the
+   * capacity/delay figures, instead of confidence only being readable by
+   * parsing free text.
+   */
+  capacityConfidence: Confidence;
+  delayConfidence: Confidence;
+  /**
    * Plain-fact strings (numbers + context only, no persuasion/spin) for the
    * LLM to narrate. This is the hallucination boundary in practice: the tool
    * layer (ticket #8) hands these facts to Gemini instead of raw numbers
@@ -302,6 +310,8 @@ export function unmetDemandAnalysis(airport: AirportRecord): UnmetDemandResult {
     isConstrained,
     isVolumeConstrained,
     isOperationallyStrained,
+    capacityConfidence: airport.capacity.confidence,
+    delayConfidence: airport.delay.confidence,
     narrativeFacts: facts,
   };
 }

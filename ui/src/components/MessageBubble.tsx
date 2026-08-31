@@ -1,3 +1,4 @@
+import Markdown from "react-markdown";
 import type { ChatMessage } from "../types";
 import { ToolCallChip } from "./ToolCallChip";
 import { ToolResultCard } from "./ToolResultCard";
@@ -20,8 +21,8 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-start">
       <div className="w-full max-w-[85%] space-y-2">
-        <div className="rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-sm">
-          {message.text}
+        <div className="markdown-content rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-sm">
+          <Markdown>{message.text}</Markdown>
         </div>
 
         {toolCalls.length > 0 ? (
