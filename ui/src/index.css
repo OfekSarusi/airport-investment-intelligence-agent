@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  /* Calm, financial-analyst-appropriate palette: slate neutrals + one muted
+     blue accent, a restrained amber for "estimated" confidence, and a
+     restrained rose reserved for "constrained" / risk signals. */
+  --color-brand-50: #f0f5fb;
+  --color-brand-100: #dce8f5;
+  --color-brand-200: #b9d1eb;
+  --color-brand-300: #8db3dd;
+  --color-brand-400: #5f90cb;
+  --color-brand-500: #3f70b3;
+  --color-brand-600: #2f5896;
+  --color-brand-700: #274873;
+  --color-brand-800: #223c5e;
+  --color-brand-900: #1f334d;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: #f3f5f8;
+}
+
+/* Slim, unobtrusive scrollbar for the message stream. */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background-color: #cbd3dd;
+  border-radius: 9999px;
+}
