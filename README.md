@@ -19,7 +19,7 @@ Pure TypeScript functions (no LLM, no I/O) that compute Congestion Index, Invest
 38 US airports with passenger volume, runway/capacity data, growth trends, and delay estimates — each field labeled `sourced` or `estimated` depending on data availability. See [DESIGN.md](./DESIGN.md).
 
 **Gemini Agent**
-A function-calling agent (`gemini-3.5-flash-lite`) exposing 5 tools that query the scoring engine — it never runs its own calculations.
+A function-calling agent (`gemini-3.5-flash-lite`) exposing 5 tools that query the scoring engine.
 
 ## Key Features
 
@@ -51,10 +51,8 @@ copy .env.example .env
 
 ```
 GEMINI_API_KEY=your_gemini_api_key_here   # required — get one free at Google AI Studio
-PORT=3000                                 # optional, defaults to 3000
+PORT=3000
 ```
-
-The only value you must provide is the Gemini API key. Get one for free at **[Google AI Studio](https://aistudio.google.com/apikey)** — no billing setup required.
 
 ### Step 2 — Build and run
 
@@ -78,8 +76,7 @@ docker compose down
 
 ## Notes
 
-- Docker is the recommended and only officially supported way to run the full app — one container serves both the API and the chat UI.
-- `GEMINI_API_KEY` is the one thing you must supply; everything else (the airport dataset, scoring logic) is already in the repo.
+Docker is the only officially supported way to run the full app — one container serves both the API and the chat UI.
 
 ## Verifying the scoring engine
 
