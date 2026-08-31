@@ -17,8 +17,6 @@ export default function App() {
   const [sessionId, setSessionId] = useState<string | undefined>(initial.sessionId);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // Only the reply that just arrived plays the typing animation -- never history restored from storage.
-  const [streamingId, setStreamingId] = useState<string | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isAtBottomRef = useRef(true);
@@ -52,7 +50,6 @@ export default function App() {
     setMessages([]);
     setSessionId(undefined);
     setError(null);
-    setStreamingId(null);
     clearPersistedChat();
   }
 
@@ -65,9 +62,10 @@ export default function App() {
     try {
       const res = await sendChatMessage(text, sessionId);
       setSessionId(res.sessionId);
-      const replyId = crypto.randomUUID();
-      setStreamingId(replyId);
-      setMessages((prev) => [...prev, { id: replyId, role: "assistant", text: res.reply, toolCalls: res.toolCalls }]);
+      setMessages((prev) => [
+        ...prev,
+        { id: crypto.randomUUID(), role: "assistant", text: res.reply, toolCalls: res.toolCalls },
+      ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong talking to the backend.");
     } finally {
@@ -104,17 +102,7 @@ export default function App() {
             {messages.length === 0 ? (
               <EmptyState onSuggestion={handleSend} />
             ) : (
-              messages.map((m) => (
-                <MessageBubble
-                  key={m.id}
-                  message={m}
-                  animate={m.id === streamingId}
-                  onGrow={() => {
-                    if (isAtBottomRef.current) scrollToBottom(false);
-                  }}
-                  onDone={() => setStreamingId((current) => (current === m.id ? null : current))}
-                />
-              ))
+              messages.map((m) => <MessageBubble key={m.id} message={m} />)
             )}
             {pending ? <ThinkingIndicator /> : null}
             {error ? (

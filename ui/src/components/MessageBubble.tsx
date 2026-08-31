@@ -1,37 +1,12 @@
-import { useEffect } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ChatMessage } from "../types";
 import { CopyButton } from "./CopyButton";
 import { ToolCallChip } from "./ToolCallChip";
 import { ToolResultCard } from "./ToolResultCard";
-import { useTypewriter } from "../lib/useTypewriter";
 
-export function MessageBubble({
-  message,
-  animate = false,
-  onGrow,
-  onDone,
-}: {
-  message: ChatMessage;
-  /** Play the typing reveal for this message. Only ever true for the
-   *  message just added this session -- never for ones restored from
-   *  localStorage on load, which should render instantly. */
-  animate?: boolean;
-  /** Called on every reveal tick, so the scroll container can follow. */
-  onGrow?: () => void;
-  /** Called once when the reveal finishes. */
-  onDone?: () => void;
-}) {
+export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
-  const { revealed, isDone } = useTypewriter(message.text, !isUser && animate, onGrow);
-
-  useEffect(() => {
-    if (!isUser && animate && isDone) {
-      onDone?.();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDone]);
 
   if (isUser) {
     return (
@@ -50,13 +25,11 @@ export function MessageBubble({
       <div className="w-full space-y-2">
         <div className="group max-w-[85%]">
           <div className="markdown-content rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-sm">
-            <Markdown remarkPlugins={[remarkGfm]}>{revealed}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{message.text}</Markdown>
           </div>
-          {isDone ? (
-            <div className="mt-0.5 flex justify-start opacity-0 transition group-hover:opacity-100">
-              <CopyButton text={message.text} />
-            </div>
-          ) : null}
+          <div className="mt-0.5 flex justify-start opacity-0 transition group-hover:opacity-100">
+            <CopyButton text={message.text} />
+          </div>
         </div>
 
         {toolCalls.length > 0 ? (
