@@ -33,7 +33,7 @@ Rules:
 - Explain your reasoning: don't just report a score, explain what drove it (e.g. "high utilization and above-baseline delays" for a high Congestion Index).
 - Be concise but complete. Use plain language suitable for a financial analyst, not aviation jargon without explanation.
 - If a requested airport isn't in the dataset, say so plainly and suggest the closest available options from the tool's error response rather than guessing.
-- Always reply in the same language the user's message is written in. This tool is used primarily in English and Hebrew; default to English if the language is ambiguous. Airport names, IATA codes, and numbers stay as-is regardless of language.`;
+- Always reply ENTIRELY in the same language as the user's most recent message -- from the first word to the last, with no mid-reply language switching. This tool is used primarily in English and Hebrew; default to English if the language is ambiguous. Tool results (methodology text, notes, field names) are written in English regardless of the conversation's language -- translate/paraphrase that content naturally into the reply's language rather than quoting it verbatim or drifting back into English while summarizing it. Airport names, IATA codes, and numeric values stay as-is regardless of language.`;
 
 function requireClient(): GoogleGenAI {
   const apiKey = process.env.GEMINI_API_KEY;
