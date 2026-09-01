@@ -1,6 +1,7 @@
 import "dotenv/config";
 import path from "node:path";
 import express from "express";
+import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { randomUUID } from "node:crypto";
 import { runTurn } from "../agent/geminiAgent";
@@ -17,6 +18,7 @@ const UI_DIST_DIR = path.join(__dirname, "../ui/dist");
 // in Docker; Vite's dev proxy makes it same-origin from the browser's view
 // in local dev too), so there's no legitimate cross-origin caller -- default
 // same-origin browser behavior is the correct, safer posture here.
+app.use(helmet());
 app.use(express.json());
 app.use(express.static(UI_DIST_DIR));
 
