@@ -7,11 +7,19 @@ import type { ChatResponse } from "./types";
  * same server serves both the API and this UI's static build.
  */
 export async function sendChatMessage(message: string, sessionId?: string): Promise<ChatResponse> {
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, sessionId }),
-  });
+  let res: Response;
+  try {
+    res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, sessionId }),
+    });
+  } catch {
+    // fetch() itself throws (offline, DNS failure, server down) rather than
+    // resolving with a non-ok response -- give a message a user can act on
+    // instead of a raw "Failed to fetch" / "NetworkError".
+    throw new Error("Could not reach the server. Check your connection and try again.");
+  }
 
   if (!res.ok) {
     const body = await res.json().catch(() => null);
@@ -19,5 +27,25 @@ export async function sendChatMessage(message: string, sessionId?: string): Prom
     throw new Error(detail || `Request failed with status ${res.status}`);
   }
 
-  return (await res.json()) as ChatResponse;
+  try {
+    return (await res.json()) as ChatResponse;
+  } catch {
+    // A 200 with a body that isn't valid JSON shouldn't happen, but would
+    // otherwise surface as a cryptic "Unexpected token" parse error.
+    throw new Error("The server returned an unreadable response. Please try again.");
+  }
+}
+
+/**
+ * Tells the backend to forget this session's in-memory state. Best-effort:
+ * failures are swallowed since this only matters for server-side memory
+ * hygiene -- the UI has already cleared its own state either way, and there's
+ * nothing useful to show the user if this particular call fails.
+ */
+export async function resetChatSession(sessionId: string): Promise<void> {
+  try {
+    await fetch(`/api/session/${encodeURIComponent(sessionId)}/reset`, { method: "POST" });
+  } catch {
+    // Best-effort -- see doc comment above.
+  }
 }

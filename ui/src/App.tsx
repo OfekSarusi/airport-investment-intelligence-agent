@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { sendChatMessage } from "./api";
+import { resetChatSession, sendChatMessage } from "./api";
 import { ChatInput } from "./components/ChatInput";
 import { EmptyState } from "./components/EmptyState";
 import { MessageBubble } from "./components/MessageBubble";
@@ -44,6 +44,9 @@ export default function App() {
   }, [sessionId, messages]);
 
   function handleClear() {
+    if (sessionId) {
+      void resetChatSession(sessionId); // best-effort -- see api.ts
+    }
     setMessages([]);
     setSessionId(undefined);
     setError(null);
