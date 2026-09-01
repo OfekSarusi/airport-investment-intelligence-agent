@@ -27,7 +27,7 @@ ui/ (chat + KPI cards)  ←  server/index.ts  ←  agent/geminiAgent.ts  ↔  Ge
 | Decision | Choice | Why |
 |---|---|---|
 | LLM / model | Gemini, `gemini-3.5-flash-lite` | Free-tier requirement; the newer `gemini-3.7-flash` hit a rate limit after one call in live testing |
-| Live vs. static data | Fully static/historical | Suggested live FAA endpoint doesn't resolve; all 4 test cases answer correctly without it |
+| Live vs. static data | Fully static/historical | Suggested live FAA endpoint doesn't resolve (see `research/aviation-data-sources.md`); a live per-question fetch would also add real network latency and extra tokens to every chat turn instead of one fixed in-memory lookup, and make answers non-reproducible for grading. All 4 test cases answer correctly without it |
 | MCP | Not implemented | One consumer (this app's own UI) — no cross-app tool-sharing need. Tools are already schema-shaped so a future MCP wrapper would be a thin adapter, not a rewrite |
 | Docker | One container (backend + built UI) | Simplest for a unified Node/TS stack |
 | Backend runtime | `ts-node`, even in Docker | Skips a compile step / dist-path juggling; costs cold-start speed, not correctness |
