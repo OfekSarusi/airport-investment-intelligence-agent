@@ -48,7 +48,7 @@
       "confidence": "estimated"
     },
     "notes": [
-      "Verified as having meaningful, year-round certificated-carrier commercial passenger service (FAA CY2024 enplanements: 2,767,856; FAA hub classification: Medium hub) -- retained in the full tier as one of the assignment's 4 mandatory test-case airports.",
+      "Verified as having meaningful, year-round certificated-carrier commercial passenger service (FAA CY2024 enplanements: 2,767,856; FAA hub classification: Medium hub) -- retained in the full tier.",
       "Capacity-utilization ratio likely UNDERSTATES ANC's true operational congestion: a large share of ANC's runway capacity is consumed by all-cargo widebody freighter operations (ANC is consistently ranked among the world's top 5 cargo airports by landed weight), which this passenger-only heuristic does not account for."
     ]
   },
@@ -101,7 +101,6 @@
       "confidence": "sourced"
     },
     "notes": [
-      "One of the assignment's 4 mandatory test-case airports (SFO 'unmet demand').",
       "SFO's chronic delay rate combined with high (62.7%) and rising capacity-utilization pressure, on a fixed 4-runway field with essentially no room to add parallel runways (bounded by San Francisco Bay), is the core 'unmet demand' story: fog-driven capacity loss compounds ordinary demand growth."
     ]
   },
@@ -154,7 +153,6 @@
       "confidence": "estimated"
     },
     "notes": [
-      "One of the assignment's 4 mandatory test-case airports (LAX vs SNA congestion comparison).",
       "94.4% estimated capacity utilization on only 4 runways (arranged as two closely-spaced pairs) makes LAX the clearest capacity-constrained major hub in this dataset -- consistent with its real-world reputation and decades of unrealized additional-runway proposals."
     ]
   },
@@ -207,7 +205,6 @@
       "confidence": "estimated"
     },
     "notes": [
-      "One of the assignment's 4 mandatory test-case airports (LAX vs SNA congestion comparison).",
       "SNA's low (26.9%) estimated capacity utilization is an artifact of REGULATORY constraint, not spare physical capacity: John Wayne Airport operates under a county Access Plan / General Aviation Noise Ordinance that caps annual average daily commercial departures and restricts night operations (22:00-07:00, 23:00-08:00 Sundays) for noise mitigation in a dense residential area. This is the key qualitative contrast with LAX for any 'why is LAX more congested than SNA' narration: SNA is artificially capped, not merely under-demanded."
     ]
   },
