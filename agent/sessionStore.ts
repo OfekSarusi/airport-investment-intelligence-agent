@@ -1,8 +1,7 @@
 /**
- * In-memory conversation state. Gemini tracks history server-side via
- * previous_interaction_id, so this only needs the last interaction id per
- * session, plus a light transcript for the UI. No persistence -- fine for a
- * demo, not for production.
+ * In-memory session state. History lives in Gemini (previous_interaction_id);
+ * this just tracks that pointer plus a transcript for the UI. Not persisted --
+ * fine for a demo, not production.
  */
 
 export interface ToolCallRecord {

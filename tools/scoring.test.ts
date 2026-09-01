@@ -16,9 +16,7 @@ describe("congestionIndex", () => {
 
 describe("investmentOpportunityScore", () => {
   it("has effective weights of 56/14/30 for utilization/delay/growth, not the headline 35/35/30", () => {
-    // Isolating each input at its zero-anchor reveals its true effective
-    // weight in the blended score -- this is the exact claim DESIGN.md
-    // makes about why the headline 35/35/30 is misleading on its own.
+    // Isolate each input to see its real weight in the blended score.
     const utilizationOnly = makeAirport({
       enplanements: { ...makeAirport().enplanements, cy2024: 10_000_000, cagr5yr: -0.05 },
       capacity: { ...makeAirport().capacity, annualPassengerCapacity: 10_000_000 },
@@ -44,7 +42,6 @@ describe("investmentOpportunityScore", () => {
 
 describe("unmetDemandAnalysis", () => {
   it("flags isVolumeConstrained when projected demand exceeds capacity", () => {
-    // 9.8M * 1.05 = 10.29M > 10M capacity.
     const airport = makeAirport({
       enplanements: { ...makeAirport().enplanements, cy2024: 9_800_000, cagr5yr: 0.05 },
       capacity: { ...makeAirport().capacity, annualPassengerCapacity: 10_000_000 },
@@ -52,13 +49,11 @@ describe("unmetDemandAnalysis", () => {
     expect(unmetDemandAnalysis(airport).isVolumeConstrained).toBe(true);
   });
 
-  it("flags isOperationallyStrained from elevated utilization + delay alone, even with declining volume (the SFO regression)", () => {
-    // A volume-only check said SFO was "not constrained" because its growth
-    // is negative -- this is the exact scenario that fix covers.
+  it("flags isOperationallyStrained from elevated utilization + delay alone, even with declining volume", () => {
     const airport = makeAirport({
       enplanements: { ...makeAirport().enplanements, cy2024: 6_000_000, cagr5yr: -0.02 },
       capacity: { ...makeAirport().capacity, annualPassengerCapacity: 10_000_000 }, // 60% utilization
-      delay: { ...makeAirport().delay, pctFlightsDelayed15: 35 }, // well above baseline + margin
+      delay: { ...makeAirport().delay, pctFlightsDelayed15: 35 }, // above baseline + margin
     });
     const result = unmetDemandAnalysis(airport);
     expect(result.isVolumeConstrained).toBe(false);
@@ -68,7 +63,7 @@ describe("unmetDemandAnalysis", () => {
 });
 
 describe("rankAirports", () => {
-  it("filters by region (New England = ME/NH/VT/MA/RI/CT) -- what test case 1 needs", () => {
+  it("filters by region (New England = ME/NH/VT/MA/RI/CT)", () => {
     const airports = [
       makeAirport({ iata: "AAA", state: "MA" }),
       makeAirport({ iata: "BBB", state: "CA" }),

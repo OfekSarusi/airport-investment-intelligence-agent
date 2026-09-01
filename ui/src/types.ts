@@ -1,9 +1,7 @@
 /**
- * Types mirroring the backend's API contract exactly (see server/index.ts,
- * agent/geminiAgent.ts, agent/toolExecutors.ts, tools/scoring.ts at the repo
- * root). Kept hand-written rather than imported across the ui/backend
- * package boundary since the two are independently-buildable halves of the
- * monorepo (ticket #9's stack decision).
+ * Types mirroring the backend's API contract (server/index.ts, agent/,
+ * tools/scoring.ts). Hand-written, not imported -- ui/ and the backend are
+ * independently-buildable.
  */
 
 export type Confidence = "sourced" | "estimated";

@@ -72,9 +72,7 @@ export interface AirportRecord {
 export const NEW_ENGLAND_STATES = ["ME", "NH", "VT", "MA", "RI", "CT"] as const;
 const NEW_ENGLAND_REGION_NAME = "New England";
 
-/** Every region name `regionOf` can return besides the "Other" fallback --
- *  the single place to look when adding a region, instead of hunting through
- *  tool descriptions and error strings for hardcoded region names. */
+/** Every region regionOf can return besides "Other" -- add new regions here. */
 export const SUPPORTED_REGIONS = [NEW_ENGLAND_REGION_NAME] as const;
 
 export function regionOf(airport: Pick<AirportRecord, "state">): string {

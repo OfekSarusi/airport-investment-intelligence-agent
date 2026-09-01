@@ -1,18 +1,13 @@
-/** Orchestration loop, built on the @google/genai Interactions API (v2.19.0). */
+/** Orchestration loop, built on the @google/genai Interactions API. */
 
 import { GoogleGenAI } from "@google/genai";
 import { toolDeclarations } from "./tools";
 import { executeTool } from "./toolExecutors";
 import { getOrCreateSession, ToolCallRecord } from "./sessionStore";
 
-// gemini-3.7-flash hit a 429 (free-tier limit: 5) after one call in testing;
-// -lite has a far safer quota margin for a live demo.
+// gemini-3.7-flash hit free-tier rate limits in testing; -lite has more headroom.
 const MODEL = "gemini-3.5-flash-lite";
-// Guards against a runaway function-calling loop. Raised from 6 after a real
-// failure: screen_investment_candidates + 5 follow-up get_airport_details
-// calls (one per result) exhausted the old cap before a final text reply --
-// response.output_text came back empty. The prompt rule below should
-// prevent that pattern; this is defense in depth.
+// Safety net against a runaway tool-calling loop (the prompt rules should prevent it).
 const MAX_TOOL_ROUNDS = 10;
 
 const SYSTEM_INSTRUCTION = `You are an investment analyst assistant for a firm evaluating US airport modernization and terminal-expansion opportunities.
@@ -28,8 +23,6 @@ Rules:
 - NEVER call get_airport_details after screen_investment_candidates in the same turn, including for top-ranked results -- not even one, not even the #1 result. screen_investment_candidates already returns every candidate's score and its utilization/congestion/growth components, which is everything needed to answer "which airports are strong candidates and why." Only call get_airport_details in a LATER, separate turn, and only if the user explicitly names one specific airport and asks to dig into it.
 - Always reply ENTIRELY in the same language as the user's most recent message -- from the first word to the last, with no mid-reply language switching. This tool is used primarily in English and Hebrew; default to English if the language is ambiguous. Tool results (methodology text, notes, field names) are written in English regardless of the conversation's language -- translate/paraphrase that content naturally into the reply's language rather than quoting it verbatim or drifting back into English while summarizing it. Airport names, IATA codes, and numeric values stay as-is regardless of language.`;
 
-// Cached across turns/requests -- there's no reason to construct a new SDK
-// client on every chat message, since the API key never changes at runtime.
 let client: GoogleGenAI | undefined;
 
 function requireClient(): GoogleGenAI {

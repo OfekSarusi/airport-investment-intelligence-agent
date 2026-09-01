@@ -1,8 +1,7 @@
 import type { ToolCall } from "../types";
 
-// get_airport_details returns everything these two also return, for the
-// same airport, so a card for either one is a pure visual duplicate of a
-// get_airport_details card already shown for that airport.
+// get_airport_details already returns everything these two return, so their
+// cards would just duplicate a get_airport_details card for the same airport.
 const SUBSUMED_BY_AIRPORT_DETAILS = new Set(["get_unmet_demand_analysis", "calculate_long_haul_stats"]);
 
 function primaryIata(call: ToolCall): string | undefined {
@@ -12,13 +11,9 @@ function primaryIata(call: ToolCall): string | undefined {
 }
 
 /**
- * Decides whether to render a KPI card for this tool call. Never affects
- * what Gemini saw or answered with -- that already happened on the backend
- * with the full, real tool result. This only prevents showing the same
- * numbers twice when two calls in one turn cover the same airport with
- * overlapping data (e.g. get_airport_details(SFO) followed by
- * get_unmet_demand_analysis(SFO), which the model can still call if it
- * wants to -- we just don't duplicate the card for it).
+ * Decides whether to render a KPI card for this tool call. Display-only --
+ * doesn't affect what Gemini saw or answered with. Just avoids showing the
+ * same airport's numbers twice in one turn.
  */
 export function shouldRenderCard(call: ToolCall, allCalls: ToolCall[], index: number): boolean {
   const iata = primaryIata(call);

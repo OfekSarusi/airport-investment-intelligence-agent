@@ -1,8 +1,4 @@
-/**
- * Deterministic scoring engine. Pure functions only -- no I/O, no LLM calls.
- * The agent hands these results to Gemini to narrate; it never computes a
- * number itself. Full rationale for the formulas: DESIGN.md.
- */
+/** Turns raw airport data into the app's investment KPIs (congestion, investment score, unmet demand, long-haul share). */
 
 import { AirportRecord, Confidence, regionOf } from "./types";
 
@@ -10,14 +6,13 @@ export const CONGESTION_WEIGHTS = { utilization: 0.6, delay: 0.4 } as const;
 export const INVESTMENT_WEIGHTS = { utilization: 0.35, congestion: 0.35, growth: 0.3 } as const;
 
 const UTILIZATION_SCORE_CAP_PCT = 100;
-const DELAY_SCORE_SATURATION_PCT = 40; // above the worst sourced figure (SFO ~29.5%), so real data isn't clipped
+const DELAY_SCORE_SATURATION_PCT = 40; // no airport gets near 100% delayed, so cap the score lower
 const GROWTH_SCORE_MIN_CAGR = -0.05;
 const GROWTH_SCORE_MAX_CAGR = 0.05;
 
 export const NATIONAL_BASELINE_DELAY_PCT = 20.3; // BTS CY2024 Air Travel Consumer Report
 
-// See DESIGN.md: flags unmet demand even without crossing the volume ceiling
-// (found via SFO, whose flat growth otherwise hid its real congestion).
+// Second way to flag unmet demand -- catches strain below the volume ceiling.
 const OPERATIONAL_STRAIN_UTILIZATION_THRESHOLD_PCT = 50;
 const OPERATIONAL_STRAIN_DELAY_MARGIN_PCT = 5;
 
@@ -29,18 +24,22 @@ function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
 
+/** Raw % of estimated capacity currently used (can exceed 100%; not clamped). */
 export function capacityUtilizationPct(airport: AirportRecord): number {
   return (airport.enplanements.cy2024 / airport.capacity.annualPassengerCapacity) * 100;
 }
 
+/** Utilization as a 0-100 score (clamped). */
 export function utilizationScore(airport: AirportRecord): number {
   return clamp((capacityUtilizationPct(airport) / UTILIZATION_SCORE_CAP_PCT) * 100);
 }
 
+/** Delay rate normalized to a 0-100 score (saturates at DELAY_SCORE_SATURATION_PCT). */
 export function delayScore(airport: AirportRecord): number {
   return clamp((airport.delay.pctFlightsDelayed15 / DELAY_SCORE_SATURATION_PCT) * 100);
 }
 
+/** 5-year passenger CAGR normalized to a 0-100 score (0% CAGR = 50, the midpoint). */
 export function growthScore(airport: AirportRecord): number {
   const { cagr5yr } = airport.enplanements;
   const range = GROWTH_SCORE_MAX_CAGR - GROWTH_SCORE_MIN_CAGR;
@@ -56,12 +55,7 @@ export interface CongestionIndexResult {
   weights: typeof CONGESTION_WEIGHTS;
 }
 
-/**
- * Also a standalone KPI -- compare_airports returns this directly.
- * `precomputedUtilizationScore` lets a caller that already has the score
- * (investmentOpportunityScore below) skip recomputing it; either way it's
- * the exact same number, since utilizationScore() is a pure function.
- */
+/** How congested is this airport? Blends utilization (60%) and delay (40%) into one 0-100 score. */
 export function congestionIndex(
   airport: AirportRecord,
   precomputedUtilizationScore?: number,
@@ -89,8 +83,7 @@ export interface InvestmentScoreResult {
   congestion: CongestionIndexResult;
 }
 
-// Congestion already weighs utilization at 60%, so the effective weights are
-// 56/14/30, not the headline 35/35/30 -- intentional (see DESIGN.md).
+/** How promising is this airport to invest in? Blends utilization, congestion, and growth into one 0-100 score. */
 export function investmentOpportunityScore(airport: AirportRecord): InvestmentScoreResult {
   const uScore = utilizationScore(airport);
   const congestion = congestionIndex(airport, uScore);
@@ -118,6 +111,7 @@ export interface LongHaulStats {
   confidence: AirportRecord["routeMix"]["confidence"];
 }
 
+/** Long-haul stats are already stored in the data; this just reshapes them. */
 export function longHaulStats(airport: AirportRecord): LongHaulStats {
   const { longHaulSharePct, distanceGroupCutoffMiles, definition, confidence } = airport.routeMix;
   return { longHaulSharePct, distanceGroupCutoffMiles, definition, confidence };
@@ -140,6 +134,7 @@ export interface UnmetDemandResult {
   narrativeFacts: string[];
 }
 
+/** Is demand outgrowing capacity, and why? Flags constrained airports and explains the numbers in plain language. */
 export function unmetDemandAnalysis(airport: AirportRecord): UnmetDemandResult {
   const currentPax = airport.enplanements.cy2024;
   const capacity = airport.capacity.annualPassengerCapacity;
@@ -220,6 +215,7 @@ export interface ScreenOptions {
   minScore?: number;
 }
 
+/** Scores every airport (optionally filtered by region/min score) and sorts by Investment Opportunity Score, highest first. */
 export function rankAirports(airports: AirportRecord[], opts: ScreenOptions = {}): RankedAirport[] {
   let pool = airports;
 

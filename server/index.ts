@@ -10,21 +10,15 @@ import { resetSession } from "../agent/sessionStore";
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-// Built UI assets (produced by `npm run build` in ui/, copied here by Docker).
-// Doesn't exist in local dev -- the UI runs its own Vite server instead.
+// Built UI assets (from ui/, copied in by Docker); absent in local dev.
 const UI_DIST_DIR = path.join(__dirname, "../ui/dist");
 
-// No CORS middleware: the UI and API always share one origin (same container
-// in Docker; Vite's dev proxy makes it same-origin from the browser's view
-// in local dev too), so there's no legitimate cross-origin caller -- default
-// same-origin browser behavior is the correct, safer posture here.
+// No CORS -- UI and API always share one origin (Docker container, or Vite's dev proxy).
 app.use(helmet());
 app.use(express.json());
 app.use(express.static(UI_DIST_DIR));
 
-// Only /api/chat is rate-limited -- it's the one endpoint that spends real
-// Gemini quota per call. 20/min per IP is generous for an actual
-// conversation but stops a flood from exhausting the (free-tier) quota.
+// Only /api/chat spends Gemini quota, so only it is rate-limited (20/min per IP).
 const chatRateLimiter = rateLimit({
   windowMs: 60_000,
   limit: 20,
@@ -51,9 +45,7 @@ app.post("/api/chat", chatRateLimiter, async (req, res) => {
     const { reply, toolCalls } = await runTurn(sessionId, message);
     res.json({ sessionId, reply, toolCalls });
   } catch (err) {
-    // Full error (may include upstream SDK/API internals) is logged
-    // server-side only -- the client gets a generic message so we never leak
-    // implementation details in an HTTP response.
+    // Log the full error server-side; never leak internals to the client.
     // eslint-disable-next-line no-console
     console.error("[/api/chat] error:", err);
     res.status(500).json({ error: "Something went wrong processing your message. Please try again." });
@@ -65,7 +57,7 @@ app.post("/api/session/:sessionId/reset", (req, res) => {
   res.json({ ok: true });
 });
 
-// SPA fallback so a hard refresh doesn't 404 (Express 5 needs a named wildcard, not bare `*`).
+// SPA fallback so a hard refresh doesn't 404 (Express 5 needs a named wildcard here, not `*`).
 app.get("/*splat", (req, res, next) => {
   if (req.path.startsWith("/api/")) {
     next();

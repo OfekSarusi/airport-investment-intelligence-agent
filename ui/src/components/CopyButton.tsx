@@ -9,9 +9,7 @@ export function CopyButton({ text }: { text: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      // Clipboard API can be unavailable (insecure context, denied
-      // permission) -- fail silently rather than show an error for a
-      // non-critical, easily-retried action.
+      // clipboard can be unavailable -- fail silently, it's easy to retry
     }
   }
 

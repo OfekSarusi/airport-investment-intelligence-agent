@@ -1,13 +1,8 @@
 /**
- * Builds the "screening" tier of data/airports.json: pulls OurAirports
- * (runways/coordinates) and FAA CY2019/CY2024 enplanements live, real HTTP
- * GET, no auth. Long-haul % and delay rate use a hardcoded estimate instead
- * (LONG_HAUL_AND_DELAY_ESTIMATES below) -- BTS T-100/OTP have no scriptable
- * download without a login (see research/aviation-data-sources.md) -- marked
- * `confidence: "estimated"` like their full-tier equivalents.
- *
- * Merges with data/full-tier.json and writes data/airports.json, which is
- * what the app actually reads; this script only needs to run to refresh it.
+ * Builds the "screening" tier of data/airports.json: fetches OurAirports and
+ * FAA enplanement data live; long-haul/delay are hardcoded estimates (BTS
+ * has no open API -- see research/aviation-data-sources.md).
+ * Merges with full-tier.json and writes data/airports.json.
  */
 
 import * as fs from "fs";
@@ -24,21 +19,13 @@ const FAA_CY2019_XLSX_URL =
 const FAA_CY2024_XLSX_URL =
   "https://www.faa.gov/airports/planning_capacity/passenger_allcargo_stats/passenger/arp-cy2024-commercial-service-enplanements.xlsx";
 
-// A uniform HTTP User-Agent is required: faa.gov returns HTTP 403 to some
-// default fetch/curl user agents.
+// faa.gov returns 403 to some default fetch/curl user agents.
 const FETCH_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; airport-data-pipeline/1.0)" };
 
-/** Same constant, and same derivation, as documented in data/full-tier.json's
- * capacity.methodology field for every full-tier airport: FAA AC 150/5060-5
- * hourly single-runway capacity benchmark (~50-60 ops/hr) x an assumed
- * ~250,000 practical annual operations for a well-utilized independent
- * runway x a blended ~85 enplaned passengers per departure (roughly half of
- * all operations), rounded to a clean constant. */
+/** Same capacity constant as the full tier (full derivation in data/full-tier.json's ANC record). */
 const ANNUAL_PASSENGERS_PER_RUNWAY = 10_000_000;
 
-/** The ~22 additional major US commercial airports pulled programmatically
- * for the screening tier. Chosen to round out geographic/hub-size diversity
- * beyond the 15 hand-curated full-tier airports (data/full-tier.json). */
+/** Additional major US airports pulled programmatically, beyond the hand-curated full tier. */
 const SCREENING_TIER_IATA_CODES = [
   "MIA", "SEA", "LAS", "PHX", "MCO", "EWR", "CLT", "MSP", "DTW", "PHL",
   "LGA", "BWI", "SAN", "TPA", "IAH", "HNL", "IAD", "DCA", "SLC", "PDX",
@@ -46,16 +33,9 @@ const SCREENING_TIER_IATA_CODES = [
 ];
 
 /**
- * Pragmatic 1-day-scope lookup table for the two fields that cannot be
- * fetched programmatically in this environment (see module doc comment).
- * longHaulSharePct: % of unique nonstop destinations at >=2000 statute miles
- *   (same distance-group cutoff and destination-count-proxy methodology used
- *   for the full tier), from published route maps (FlightConnections /
- *   Wikipedia / airline route lists, accessed Aug 2026).
- * delayPct15: estimated % of flights delayed >15min, anchored to the real
- *   CY2024 national BTS baseline (20.3%) and adjusted for each airport's
- *   documented hub role / airspace complexity / runway layout.
- * note: the specific, citable fact (if any) behind the adjustment.
+ * Hardcoded estimates for the two fields that can't be fetched (see module
+ * comment). longHaulSharePct: % of nonstop destinations >=2000mi. delayPct15:
+ * estimated delay rate, anchored to the CY2024 national baseline. note: why.
  */
 const LONG_HAUL_AND_DELAY_ESTIMATES: Record<
   string,
@@ -251,8 +231,7 @@ async function main() {
   for (const a of airports) {
     if (a.iata_code) byIata.set(a.iata_code, a);
   }
-  // Group once instead of re-scanning the whole (tens-of-thousands-row) runways
-  // list per airport inside the loop below.
+  // Group once, instead of rescanning the whole runways list per airport below.
   const runwaysByAirportIdent = new Map<string, OurAirportsRow[]>();
   for (const r of runways) {
     const list = runwaysByAirportIdent.get(r.airport_ident);
@@ -280,7 +259,7 @@ async function main() {
 
     const relevantRunways = runwaysByAirportIdent.get(airport.ident) ?? [];
     const openRunways = relevantRunways.filter((r) => r.closed !== "1");
-    const runwayCount = Math.max(openRunways.length, 1); // guard against bad data: never divide capacity to 0
+    const runwayCount = Math.max(openRunways.length, 1); // never let capacity divide by 0
 
     const cagr = computeCagr(f19.enplanements, f24.enplanements);
     const annualPassengerCapacity = runwayCount * ANNUAL_PASSENGERS_PER_RUNWAY;
