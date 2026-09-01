@@ -220,7 +220,9 @@ export function rankAirports(airports: AirportRecord[], opts: ScreenOptions = {}
   let pool = airports;
 
   if (opts.region) {
-    pool = pool.filter((a) => regionOf(a) === opts.region);
+    // Case/whitespace-insensitive: the model isn't schema-constrained to an exact region string.
+    const normalizedRegion = opts.region.trim().toLowerCase();
+    pool = pool.filter((a) => regionOf(a).toLowerCase() === normalizedRegion);
   }
 
   const scored: RankedAirport[] = pool.map((airport) => ({
